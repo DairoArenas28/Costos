@@ -37,10 +37,11 @@ public class Form_Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         panelMaestro = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         btnIngrediente = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         btnMaestro = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         btnMaestro1 = new javax.swing.JButton();
         btnReceta = new javax.swing.JButton();
         headerPanel = new javax.swing.JPanel();
@@ -55,6 +56,15 @@ public class Form_Main extends javax.swing.JFrame {
         panelMaestro.setBackground(new java.awt.Color(173, 216, 230));
         panelMaestro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelMaestro.setEnabled(false);
+
+        jButton4.setForeground(new java.awt.Color(0, 71, 171));
+        jButton4.setText("jButton3");
+        jButton4.setBorderPainted(false);
+        jButton4.setContentAreaFilled(false);
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton4.setDefaultCapable(false);
+        jButton4.setFocusPainted(false);
+        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jButton5.setForeground(new java.awt.Color(0, 71, 171));
         jButton5.setText("jButton3");
@@ -80,15 +90,6 @@ public class Form_Main extends javax.swing.JFrame {
         btnIngrediente.setFocusPainted(false);
         btnIngrediente.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("jButton1");
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setDefaultCapable(false);
-        jButton2.setFocusPainted(false);
-        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
         javax.swing.GroupLayout panelMaestroLayout = new javax.swing.GroupLayout(panelMaestro);
         panelMaestro.setLayout(panelMaestroLayout);
         panelMaestroLayout.setHorizontalGroup(
@@ -96,12 +97,9 @@ public class Form_Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMaestroLayout.createSequentialGroup()
                 .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(panelMaestroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))
-            .addGroup(panelMaestroLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         panelMaestroLayout.setVerticalGroup(
             panelMaestroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,7 +109,7 @@ public class Form_Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(jButton4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -124,6 +122,15 @@ public class Form_Main extends javax.swing.JFrame {
         btnMaestro.setDefaultCapable(false);
         btnMaestro.setFocusPainted(false);
         btnMaestro.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("jButton1");
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setDefaultCapable(false);
+        jButton2.setFocusPainted(false);
+        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         btnMaestro1.setForeground(new java.awt.Color(255, 255, 255));
         btnMaestro1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/inicio.png"))); // NOI18N
@@ -151,6 +158,7 @@ public class Form_Main extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnReceta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -165,7 +173,9 @@ public class Form_Main extends javax.swing.JFrame {
                 .addComponent(btnMaestro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 560));
@@ -307,6 +317,7 @@ public class Form_Main extends javax.swing.JFrame {
     private javax.swing.JButton btnReceta;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
