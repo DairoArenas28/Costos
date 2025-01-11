@@ -20,6 +20,8 @@ public class CostosRecetas {
         Form_Main formMain = new Form_Main();
         formMain.setLocationRelativeTo(null);
         formMain.setVisible(true);
+        /*File file = new File("content.txt","Hola");
+        file.Writer();*/
     }
     
 }
