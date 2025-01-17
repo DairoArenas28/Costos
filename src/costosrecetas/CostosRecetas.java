@@ -6,8 +6,10 @@ package costosrecetas;
 
 import Form.Form_Main;
 import java.util.Properties;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -24,27 +26,37 @@ public class CostosRecetas {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        /*Form_Main formMain = new Form_Main();
+        Form_Main formMain = new Form_Main();
         formMain.setLocationRelativeTo(null);
-        formMain.setVisible(true);*/
+        formMain.setSize(1000, 560);
+        formMain.setResizable(false);
+        formMain.setVisible(true);
         /*File file = new File("content.txt","Hola");
         file.Writer();*/
-        String to = "supercell19230@gmail.com";
-        String from = "dairofernandoarenasgiraldo@gmail.com";
-        String host = "smtp.google.com";
-        String user = "dairofernandoarenasgiraldo@gmail.com";
-        String password = "";
+        /*String to = "dairofernandoarenasgiraldo@gmail.com";
+        String from = "dairo.arenas802@pascualbravo.edu.co";
+        String host = "smtp.gmail.com";
+        String user = "dairo.arenas802@pascualbravo.edu.co";
+        String password = "cmkjkfervxuprmlu"; 
         String port = "587";
-        
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.smtp.port", port);
-        properties.setProperty("mail.smtp.auth", "true");
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-        properties.setProperty("mail.smtp.ssl.trust", host);
-        
+
+        // Configurar las propiedades del servidor SMTP
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        properties.put("mail.debug", "true");
+        properties.put("mail.smtp.starttls.enable", "true"); // Activar STARTTLS
+        properties.put("mail.smtp.ssl.enable", "false"); // Desactivar SSL
+
         // Crear la sesión con autenticación
-        Session session = Session.getInstance(properties);
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(user, password);
+            }
+        });
 
         try {
             // Crear el mensaje
@@ -59,7 +71,7 @@ public class CostosRecetas {
             System.out.println("Mensaje enviado con éxito.");
         } catch (MessagingException mex) {
             mex.printStackTrace();
-        }
+        }*/
     }
     
 }

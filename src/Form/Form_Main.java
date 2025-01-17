@@ -4,6 +4,7 @@
  */
 package Form;
 
+import Tools.PanelManager;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -19,6 +20,7 @@ public class Form_Main extends javax.swing.JFrame {
     /**
      * Creates new form Form_Main
      */
+    
     public Form_Main() {
         initComponents();
         
@@ -35,7 +37,7 @@ public class Form_Main extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        menuPanel = new javax.swing.JPanel();
         panelMaestro = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -48,10 +50,12 @@ public class Form_Main extends javax.swing.JFrame {
         bodyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 560));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(0, 71, 171));
+        menuPanel.setBackground(new java.awt.Color(0, 71, 171));
 
         panelMaestro.setBackground(new java.awt.Color(173, 216, 230));
         panelMaestro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -89,6 +93,11 @@ public class Form_Main extends javax.swing.JFrame {
         btnIngrediente.setDefaultCapable(false);
         btnIngrediente.setFocusPainted(false);
         btnIngrediente.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnIngrediente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIngredienteMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelMaestroLayout = new javax.swing.GroupLayout(panelMaestro);
         panelMaestro.setLayout(panelMaestroLayout);
@@ -152,19 +161,19 @@ public class Form_Main extends javax.swing.JFrame {
         btnReceta.setFocusPainted(false);
         btnReceta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
+        menuPanel.setLayout(menuPanelLayout);
+        menuPanelLayout.setHorizontalGroup(
+            menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnReceta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        menuPanelLayout.setVerticalGroup(
+            menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuPanelLayout.createSequentialGroup()
                 .addGap(133, 133, 133)
                 .addComponent(btnMaestro1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -178,46 +187,27 @@ public class Form_Main extends javax.swing.JFrame {
                 .addContainerGap(186, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 560));
+        jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 560));
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1250, Short.MAX_VALUE)
+            .addGap(0, 1050, Short.MAX_VALUE)
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 1250, 50));
+        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 1050, 50));
 
         bodyPanel.setBackground(new java.awt.Color(204, 204, 255));
+        bodyPanel.setPreferredSize(new java.awt.Dimension(1050, 510));
+        bodyPanel.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1050, 510));
 
-        javax.swing.GroupLayout bodyPanelLayout = new javax.swing.GroupLayout(bodyPanel);
-        bodyPanel.setLayout(bodyPanelLayout);
-        bodyPanelLayout.setHorizontalGroup(
-            bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1250, Short.MAX_VALUE)
-        );
-        bodyPanelLayout.setVerticalGroup(
-            bodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1250, 510));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -225,6 +215,13 @@ public class Form_Main extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void btnIngredienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngredienteMouseClicked
+        //JOptionPane.showMessageDialog(null, "Hola");
+        PanelManager panelManager = new PanelManager(bodyPanel);
+        Form_Ingrediente formIngrediente = new Form_Ingrediente();
+        panelManager.showForm(formIngrediente);
+    }//GEN-LAST:event_btnIngredienteMouseClicked
 
     /**
      * @param args the command line arguments
@@ -320,7 +317,7 @@ public class Form_Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel menuPanel;
     private javax.swing.JPanel panelMaestro;
     // End of variables declaration//GEN-END:variables
 }
