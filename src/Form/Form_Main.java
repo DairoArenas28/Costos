@@ -50,7 +50,7 @@ public class Form_Main extends javax.swing.JFrame {
         bodyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 560));
+        setPreferredSize(null);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -184,28 +184,28 @@ public class Form_Main extends javax.swing.JFrame {
                 .addComponent(panelMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
 
-        jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 560));
+        jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 620));
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1050, Short.MAX_VALUE)
+            .addGap(0, 1160, Short.MAX_VALUE)
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 1050, 50));
+        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 1160, 50));
 
         bodyPanel.setBackground(new java.awt.Color(204, 204, 255));
         bodyPanel.setPreferredSize(new java.awt.Dimension(1050, 510));
         bodyPanel.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1050, 510));
+        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1160, 570));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

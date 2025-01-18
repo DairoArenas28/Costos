@@ -28,8 +28,6 @@ public class CostosRecetas {
         // TODO code application logic here
         Form_Main formMain = new Form_Main();
         formMain.setLocationRelativeTo(null);
-        formMain.setSize(1000, 560);
-        formMain.setResizable(false);
         formMain.setVisible(true);
         /*File file = new File("content.txt","Hola");
         file.Writer();*/
