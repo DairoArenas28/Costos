@@ -8,6 +8,7 @@ import Tools.PanelManager;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -46,11 +47,11 @@ public class Form_Main extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         btnMaestro1 = new javax.swing.JButton();
         btnReceta = new javax.swing.JButton();
+        btnConectar = new javax.swing.JButton();
         headerPanel = new javax.swing.JPanel();
         bodyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(null);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -161,15 +162,34 @@ public class Form_Main extends javax.swing.JFrame {
         btnReceta.setFocusPainted(false);
         btnReceta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        btnConectar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/basedatos_24.png"))); // NOI18N
+        btnConectar.setText("Conectar");
+        btnConectar.setBorderPainted(false);
+        btnConectar.setContentAreaFilled(false);
+        btnConectar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnConectar.setDefaultCapable(false);
+        btnConectar.setFocusPainted(false);
+        btnConectar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConectarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnReceta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnMaestro1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(btnConectar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,11 +203,13 @@ public class Form_Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelMaestro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnConectar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addContainerGap(279, Short.MAX_VALUE))
         );
 
-        jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 620));
+        jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 690));
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
@@ -205,7 +227,7 @@ public class Form_Main extends javax.swing.JFrame {
         bodyPanel.setBackground(new java.awt.Color(204, 204, 255));
         bodyPanel.setPreferredSize(new java.awt.Dimension(1050, 510));
         bodyPanel.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1160, 570));
+        jPanel1.add(bodyPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, 1160, 640));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -222,6 +244,13 @@ public class Form_Main extends javax.swing.JFrame {
         Form_Ingrediente formIngrediente = new Form_Ingrediente();
         panelManager.showForm(formIngrediente);
     }//GEN-LAST:event_btnIngredienteMouseClicked
+
+    private void btnConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConectarActionPerformed
+        Form_Conexion fomConexion = new Form_Conexion();
+        fomConexion.setVisible(true);
+        fomConexion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fomConexion.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnConectarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -308,6 +337,7 @@ public class Form_Main extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bodyPanel;
+    private javax.swing.JButton btnConectar;
     private javax.swing.JButton btnIngrediente;
     private javax.swing.JButton btnMaestro;
     private javax.swing.JButton btnMaestro1;

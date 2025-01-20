@@ -8,6 +8,6 @@ package Clases;
  *
  * @author DanielSantiago
  */
-public class Query extends Connect {
+public class Query {
     
 }

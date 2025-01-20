@@ -22,7 +22,10 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         
         //btnGuardar.putClientProperty("JComponent.roundRect", true);
         //UIManager.setLookAndFeel(new FlatCarbonIJTheme());
-        UIManager.put("Button.arc", 100);
+        tableIngrediente.getTableHeader().setOpaque(false);
+        tableIngrediente.getTableHeader().setBackground(new Color(0,71,171));
+        tableIngrediente.getTableHeader().setForeground(Color.white);
+        tableIngrediente.setRowHeight(25);
         
         TextPrompt textcodigo = new TextPrompt("Codigo", textCodigo, Color.black);
         TextPrompt textdescrip = new TextPrompt("Descripción", textDescrip, Color.black);
@@ -45,7 +48,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableIngrediente = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
         textDescrip = new javax.swing.JTextField();
@@ -65,7 +68,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1050, 510));
         setRequestFocusEnabled(false);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -76,7 +79,13 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tableIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableIngrediente.setFocusable(false);
+        tableIngrediente.setOpaque(false);
+        tableIngrediente.setRowHeight(25);
+        tableIngrediente.setSelectionBackground(new java.awt.Color(204, 204, 255));
+        tableIngrediente.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tableIngrediente);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -96,31 +105,31 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         textCodigo.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textDescrip.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        textDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textDescrip.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textTipoIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textTipoIngrediente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textTipoIngrediente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textTipoIngrediente.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textUnidadMedida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textUnidadMedida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textUnidadMedida.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textPrecioUnidad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textPrecioUnidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textPrecioUnidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textPrecioUnidad.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textRendimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textRendimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textRendimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textRendimiento.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textProveedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textProveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textProveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textProveedor.setCaretColor(new java.awt.Color(255, 255, 255));
 
         textNota.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        textNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textNota.setCaretColor(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -252,7 +261,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tableIngrediente;
     private javax.swing.JTextField textCodigo;
     private javax.swing.JTextField textDescrip;
     private javax.swing.JTextField textNota;
