@@ -65,7 +65,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane2" alignment="0" pref="376" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" alignment="0" pref="377" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -79,12 +79,24 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="tableIngrediente">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                  <Table columnCount="8" rowCount="4">
+                    <Column editable="false" title="C&#xf3;digo" type="java.lang.String">
+                      <Data value=""/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                      <Data value="null"/>
+                    </Column>
+                    <Column editable="false" title="Descripci&#xf3;n" type="java.lang.String"/>
+                    <Column editable="false" title="Tipo ingrediente" type="java.lang.String"/>
+                    <Column editable="true" title="Unidad medida" type="java.lang.String"/>
+                    <Column editable="true" title="Proveedor" type="java.lang.String"/>
+                    <Column editable="true" title="Precio unidad" type="java.lang.Float"/>
+                    <Column editable="true" title="Rendimiento" type="java.lang.Float"/>
+                    <Column editable="false" title="Nota" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -171,11 +183,13 @@
                       <Component id="textUnidadMedida" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="textPrecioUnidad" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textRendimiento" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textProveedor" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNota" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="textProveedor" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="textNota" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="textPrecioUnidad" max="32767" attributes="0"/>
+                      <Component id="textRendimiento" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="8" max="32767" attributes="0"/>
               </Group>
@@ -195,15 +209,12 @@
                 </LineBorder>
               </Border>
             </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textDescrip">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="16" style="0"/>
+              <Font name="Segoe UI" size="14" style="0"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -211,9 +222,6 @@
                   <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
-            </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
           </Properties>
         </Component>
@@ -229,9 +237,6 @@
                 </LineBorder>
               </Border>
             </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textUnidadMedida">
@@ -245,43 +250,6 @@
                   <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
                 </LineBorder>
               </Border>
-            </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="textPrecioUnidad">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="textRendimiento">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
           </Properties>
         </Component>
@@ -297,9 +265,6 @@
                 </LineBorder>
               </Border>
             </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textNota">
@@ -314,8 +279,32 @@
                 </LineBorder>
               </Border>
             </Property>
-            <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="textPrecioUnidad">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder>
+                  <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="0"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="textRendimiento">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format subtype="0" type="0"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="14" style="0"/>
             </Property>
           </Properties>
         </Component>

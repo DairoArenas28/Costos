@@ -21,7 +21,6 @@ public class Form_Main extends javax.swing.JFrame {
     /**
      * Creates new form Form_Main
      */
-    
     public Form_Main() {
         initComponents();
         
@@ -251,7 +250,7 @@ public class Form_Main extends javax.swing.JFrame {
         fomConexion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         fomConexion.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnConectarActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */

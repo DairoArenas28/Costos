@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  * @author DanielSantiago
  */
 public class Conexion {
+    
+    private String urlFinal;
 
     private Connection conn;
     
@@ -72,10 +74,13 @@ public class Conexion {
         return null;
     }
     
-    /*public Connection Connection() throws SQLException {
+    public Connection Connection() throws SQLException {
+        String[] datosConexion = RecuperarConexion();
+        urlFinal = "jdbc:sqlserver://" + datosConexion[2]  + ";database=" + datosConexion[3] + ";encrypt=true;trustServerCertificate=true;loginTimeout=30;";
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(urlFinal, user, password);
+            //System.out.println(urlFinal);
+            conn = DriverManager.getConnection(urlFinal, datosConexion[0], datosConexion[1]);
             if (conn != null) {
                 System.out.println("Conexión exitosa.");
             }
@@ -84,7 +89,7 @@ public class Conexion {
             throw e;
         }
         return conn;
-    }*/
+    }
     
     public void cerrarConexion() throws SQLException {
         if (conn != null && !conn.isClosed()) {
