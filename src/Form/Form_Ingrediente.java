@@ -88,7 +88,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
-        editMenuTable.setText("jMenuItem3");
+        editMenuTable.setText("Editar");
         popupMenuIngrediente.add(editMenuTable);
 
         setMinimumSize(new java.awt.Dimension(1050, 510));
