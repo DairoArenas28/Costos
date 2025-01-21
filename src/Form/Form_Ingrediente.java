@@ -9,11 +9,16 @@ import Entidad.Ingrediente;
 import Tools.TextPrompt;
 import java.awt.Color;
 import java.awt.ScrollPane;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,6 +46,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     public Form_Ingrediente() {
         initComponents();
         fillIngrediente();
+        
+        SeletedRowTable();
         //JScrollPane scrollPane = new JScrollPane(tableIngrediente);
         //btnGuardar.putClientProperty("JComponent.roundRect", true);
         //UIManager.setLookAndFeel(new FlatCarbonIJTheme());
@@ -48,6 +55,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.getTableHeader().setBackground(new Color(0,71,171));
         tableIngrediente.getTableHeader().setForeground(Color.white);
         tableIngrediente.setRowHeight(25);
+        //tableIngrediente.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        
+        // Agregar la tabla a un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(tableIngrediente);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        tablePanel.add(scrollPane);
         
         TextPrompt textcodigo = new TextPrompt("Codigo", textCodigo, Color.black);
         TextPrompt textdescrip = new TextPrompt("Descripción", textDescrip, Color.black);
@@ -70,7 +83,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         popupMenuIngrediente = new javax.swing.JPopupMenu();
         editMenuTable = new javax.swing.JMenuItem();
-        jPanel4 = new javax.swing.JPanel();
+        deleteMenuTable = new javax.swing.JMenuItem();
+        tablePanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableIngrediente = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
@@ -88,12 +102,32 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
+        popupMenuIngrediente.setBackground(new java.awt.Color(0, 71, 171));
+        popupMenuIngrediente.setForeground(new java.awt.Color(255, 255, 255));
+
+        editMenuTable.setBackground(new java.awt.Color(0, 71, 171));
+        editMenuTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        editMenuTable.setForeground(new java.awt.Color(255, 255, 255));
+        editMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/editar_24.png"))); // NOI18N
         editMenuTable.setText("Editar");
+        editMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMenuTableActionPerformed(evt);
+            }
+        });
         popupMenuIngrediente.add(editMenuTable);
+
+        deleteMenuTable.setBackground(new java.awt.Color(255, 102, 102));
+        deleteMenuTable.setForeground(new java.awt.Color(255, 255, 255));
+        deleteMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar_2_24.png"))); // NOI18N
+        deleteMenuTable.setText("Eliminar");
+        popupMenuIngrediente.add(deleteMenuTable);
 
         setMinimumSize(new java.awt.Dimension(1050, 510));
         setPreferredSize(new java.awt.Dimension(1050, 510));
         setRequestFocusEnabled(false);
+
+        tablePanel.setLayout(new java.awt.BorderLayout());
 
         tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
@@ -122,6 +156,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableIngrediente.setAutoscrolls(false);
         tableIngrediente.setComponentPopupMenu(popupMenuIngrediente);
         tableIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tableIngrediente.setFocusable(false);
@@ -131,18 +166,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tableIngrediente);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-        );
+        tablePanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -152,6 +176,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         textTipoIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textTipoIngrediente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textTipoIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textTipoIngredienteKeyPressed(evt);
+            }
+        });
 
         textUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textUnidadMedida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -268,7 +297,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -280,7 +309,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -322,7 +351,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         try {
             Map<String, Object> columnValues = new HashMap<>();
             columnValues.put("iTipoIngrediente", 3);
-            columnValues.put("iMedida", 3);
+            columnValues.put("iMedida", 1);
             columnValues.put("iProveedor", 1);
             columnValues.put("sCodigo", codigo);
             columnValues.put("sDescrip", descrip);
@@ -340,19 +369,55 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void editMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuTableActionPerformed
+        
+    }//GEN-LAST:event_editMenuTableActionPerformed
+
+    private void textTipoIngredienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTipoIngredienteKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            //JOptionPane.showMessageDialog(this, "Has presionado la tecla F4.");
+            Form_Consultar formConsultar = new Form_Consultar();
+            formConsultar.setVisible(true);
+            formConsultar.setLocationRelativeTo(this);
+            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+    }//GEN-LAST:event_textTipoIngredienteKeyPressed
+    
+    private void SeletedRowTable(){
+        tableIngrediente.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Obtener la fila seleccionada
+                int filaSeleccionada = tableIngrediente.getSelectedRow();
+
+                // Verificar que haya una fila seleccionada
+                if (filaSeleccionada != -1) {
+                    // Obtener los datos de la fila
+                    String id = tableIngrediente.getValueAt(filaSeleccionada, 0).toString();
+                    String nombre = tableIngrediente.getValueAt(filaSeleccionada, 1).toString();
+                    String apellido = tableIngrediente.getValueAt(filaSeleccionada, 2).toString();
+
+                    // Mostrar los datos en la consola o en un JOptionPane
+                    System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
+                    JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
+                }
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JMenuItem deleteMenuTable;
     private javax.swing.JMenuItem editMenuTable;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu popupMenuIngrediente;
     private javax.swing.JTable tableIngrediente;
+    private javax.swing.JPanel tablePanel;
     private javax.swing.JTextField textCodigo;
     private javax.swing.JTextField textDescrip;
     private javax.swing.JTextField textNota;
