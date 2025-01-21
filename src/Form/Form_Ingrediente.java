@@ -68,6 +68,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenuIngrediente = new javax.swing.JPopupMenu();
+        editMenuTable = new javax.swing.JMenuItem();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableIngrediente = new javax.swing.JTable();
@@ -85,6 +87,9 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+
+        editMenuTable.setText("jMenuItem3");
+        popupMenuIngrediente.add(editMenuTable);
 
         setMinimumSize(new java.awt.Dimension(1050, 510));
         setPreferredSize(new java.awt.Dimension(1050, 510));
@@ -117,6 +122,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableIngrediente.setComponentPopupMenu(popupMenuIngrediente);
         tableIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tableIngrediente.setFocusable(false);
         tableIngrediente.setOpaque(false);
@@ -286,11 +292,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             tableModel.setRowCount(0);
             for (Ingrediente ingrediente : ingredientes) {
                 tableModel.addRow(new Object[]{
+                    ingrediente.getCodigo(),
+                    ingrediente.getDescrip(),
                     ingrediente.getTipoingrediente(),
                     ingrediente.getMedida(),
                     ingrediente.getProveedor(),
-                    ingrediente.getCodigo(),
-                    ingrediente.getDescrip(),
                     ingrediente.getPreciounidad(),
                     ingrediente.getRendimiento(),
                     ingrediente.getNota(),
@@ -316,7 +322,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         try {
             Map<String, Object> columnValues = new HashMap<>();
             columnValues.put("iTipoIngrediente", 3);
-            columnValues.put("iMedida", 1);
+            columnValues.put("iMedida", 3);
             columnValues.put("iProveedor", 1);
             columnValues.put("sCodigo", codigo);
             columnValues.put("sDescrip", descrip);
@@ -337,6 +343,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JMenuItem editMenuTable;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -344,6 +351,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu popupMenuIngrediente;
     private javax.swing.JTable tableIngrediente;
     private javax.swing.JTextField textCodigo;
     private javax.swing.JTextField textDescrip;
