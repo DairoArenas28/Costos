@@ -52,10 +52,13 @@ public class Query<T> extends Conexion {
         return registros;
     }
     
-   public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName) throws SQLException {
+   public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName, List<String> itemSearch) throws SQLException {
         List<Map<String, Object>> registros = new ArrayList<>();
         String query = "SELECT * FROM " + tableName;
 
+        if(!itemSearch.isEmpty() && !"".equals(itemSearch.get(0)) && !"".equals(itemSearch.get(1))){
+            query += " WHERE " + itemSearch.get(0) + " = '" + itemSearch.get(1) + "'";
+        }
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 

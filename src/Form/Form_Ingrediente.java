@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -72,9 +73,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TextPrompt textproveedor = new TextPrompt("Proveedor", textProveedor, Color.black);
         TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
         
-        textTipoIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+        
+        /*textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent evt) {
+                proveedor = textProveedor.getText();
+                //System.out.println("Dato: " + proveedor);
                 if (evt.getKeyCode() == KeyEvent.VK_F4) {
                     Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
                         @Override
@@ -82,13 +86,13 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                             //textTipoIngrediente.setText(data);
                             System.out.println(data);
                         }
-                    },"Proveedor");
+                    },"Proveedor",Arrays.asList("sNombre",proveedor));
                     formConsultar.setVisible(true);
                     formConsultar.setLocationRelativeTo(null);
                     formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 }
             }
-        });
+        });*/
     }
 
     /**
@@ -206,6 +210,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         textProveedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textProveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textProveedorKeyPressed(evt);
+            }
+        });
 
         textNota.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -398,8 +407,36 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     }
     
     private void textTipoIngredienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTipoIngredienteKeyPressed
-        
+        tipoingrediente = textTipoIngrediente.getText();
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                @Override
+                public void onDataReceived(List<String> data) {
+                    //textTipoIngrediente.setText(data);
+                    System.out.println(data);
+                }
+            },"TipoIngrediente",Arrays.asList("sDescrip",tipoingrediente));
+            formConsultar.setVisible(true);
+            formConsultar.setLocationRelativeTo(null);
+            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
     }//GEN-LAST:event_textTipoIngredienteKeyPressed
+
+    private void textProveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textProveedorKeyPressed
+        proveedor = textProveedor.getText();
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                @Override
+                public void onDataReceived(List<String> data) {
+                    //textTipoIngrediente.setText(data);
+                    System.out.println(data);
+                }
+            },"Proveedor",Arrays.asList("sNombre",proveedor));
+            formConsultar.setVisible(true);
+            formConsultar.setLocationRelativeTo(null);
+            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+    }//GEN-LAST:event_textProveedorKeyPressed
     
     private void SeletedRowTable(){
         tableIngrediente.addMouseListener(new MouseAdapter() {

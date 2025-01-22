@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -30,11 +30,13 @@ public class Form_Consultar extends javax.swing.JFrame {
     
     private String tableName;
     
+    private List<String> itemSearch;
     
-    public Form_Consultar(CallBack callback, String tableName) {
+    public Form_Consultar(CallBack callback, String tableName, List<String> itemSearch ) {
         initComponents();
         this.callback = callback;
         this.tableName = tableName;
+        this.itemSearch = itemSearch;
         
         tableEncabezado.getTableHeader().setOpaque(false);
         tableEncabezado.getTableHeader().setBackground(new Color(0,71,171));
@@ -61,7 +63,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         Query qry = new Query();
         
         try {
-            List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName);
+            List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName,itemSearch);
             System.out.println(tableName);
             System.out.println(registros);
             fillTableFromList(registros, tableEncabezado);
@@ -128,8 +130,13 @@ public class Form_Consultar extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
+        jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Consultar");
+        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
+        jButton1.setDefaultCapable(false);
+        jButton1.setFocusPainted(false);
+        jButton1.setFocusable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,27 +209,36 @@ public class Form_Consultar extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(204, 204, 255));
 
         btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/check_list_v2_48.png"))); // NOI18N
+        btnSeleccionar.setBorderPainted(false);
+        btnSeleccionar.setContentAreaFilled(false);
+        btnSeleccionar.setDefaultCapable(false);
+        btnSeleccionar.setFocusPainted(false);
 
-        jButton3.setText("Cancelar");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/close_32.png"))); // NOI18N
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setDefaultCapable(false);
+        jButton3.setFocusable(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(559, Short.MAX_VALUE)
-                .addComponent(btnSeleccionar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addGap(12, 12, 12))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 750, 50));
