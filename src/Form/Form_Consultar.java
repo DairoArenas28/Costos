@@ -4,7 +4,17 @@
  */
 package Form;
 
+import Clases.CallBack;
+import Clases.Query;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,15 +25,78 @@ public class Form_Consultar extends javax.swing.JFrame {
     /**
      * Creates new form Form_Consultar
      */
-    public Form_Consultar() {
+    
+    private CallBack callback;
+    
+    private String tableName;
+    
+    
+    public Form_Consultar(CallBack callback, String tableName) {
         initComponents();
+        this.callback = callback;
+        this.tableName = tableName;
         
-        tableIngrediente.getTableHeader().setOpaque(false);
-        tableIngrediente.getTableHeader().setBackground(new Color(0,71,171));
-        tableIngrediente.getTableHeader().setForeground(Color.white);
-        tableIngrediente.setRowHeight(25);
+        tableEncabezado.getTableHeader().setOpaque(false);
+        tableEncabezado.getTableHeader().setBackground(new Color(0,71,171));
+        tableEncabezado.getTableHeader().setForeground(Color.white);
+        tableEncabezado.setRowHeight(25);
+        
+        fillEncabezado();
+        
+        // Acción para enviar la lista de datos al formulario principal
+        btnSeleccionar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> datos = new ArrayList<>();
+                datos.add("Hola");
+                if (callback != null) {
+                    callback.onDataReceived(datos);
+                }
+                dispose(); // Cerrar el formulario secundario
+            }
+        });
     }
+    
+    public void fillEncabezado(){
+        Query qry = new Query();
+        
+        try {
+            List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName);
+            System.out.println(tableName);
+            System.out.println(registros);
+            fillTableFromList(registros, tableEncabezado);
+            
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
+    public static void fillTableFromList(List<Map<String, Object>> data, JTable table) {
+        if (data == null || data.isEmpty()) {
+            return;
+        }
 
+        // Obtener los nombres de las columnas del primer mapa (esto asume que todos los mapas tienen las mismas claves)
+        Map<String, Object> firstItem = data.get(0);
+        String[] columnNames = firstItem.keySet().toArray(new String[0]);
+
+        // Crear el modelo de la tabla con los nombres de las columnas
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+
+        // Llenar el modelo con los datos
+        for (Map<String, Object> rowMap : data) {
+            Object[] row = new Object[columnNames.length];
+
+            for (int i = 0; i < columnNames.length; i++) {
+                row[i] = rowMap.get(columnNames[i]); // Obtener el valor de cada celda utilizando la clave
+            }
+
+            // Agregar la fila al modelo
+            tableModel.addRow(row);
+        }
+
+        // Asignar el modelo al JTable
+        table.setModel(tableModel);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,23 +109,27 @@ public class Form_Consultar extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableIngrediente = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        tableEncabezado = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        btnSeleccionar = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 71, 171));
 
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton1.setText("Consultar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -62,7 +139,8 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox1, 0, 198, Short.MAX_VALUE)
-                    .addComponent(textCodigo))
+                    .addComponent(textCodigo)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -72,48 +150,35 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(288, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 360));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
-        tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
+        tableEncabezado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tableEncabezado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Código", "Descripción", "Tipo ingrediente", "Unidad medida"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableIngrediente.setAutoscrolls(false);
-        tableIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableIngrediente.setFocusable(false);
-        tableIngrediente.setOpaque(false);
-        tableIngrediente.setRowHeight(25);
-        tableIngrediente.setSelectionBackground(new java.awt.Color(204, 204, 255));
-        tableIngrediente.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(tableIngrediente);
+        ));
+        tableEncabezado.setAutoscrolls(false);
+        tableEncabezado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableEncabezado.setFocusable(false);
+        tableEncabezado.setOpaque(false);
+        tableEncabezado.setRowHeight(25);
+        tableEncabezado.setSelectionBackground(new java.awt.Color(204, 204, 255));
+        tableEncabezado.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tableEncabezado);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -125,56 +190,42 @@ public class Form_Consultar extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 363, Short.MAX_VALUE)
+            .addGap(0, 360, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 6, Short.MAX_VALUE)
+                    .addGap(0, 3, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 540, 360));
 
-        jPanel3.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel4.setBackground(new java.awt.Color(204, 204, 255));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/close_24.png"))); // NOI18N
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setDefaultCapable(false);
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
+        btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnSeleccionar.setText("Seleccionar");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/check_list_32.png"))); // NOI18N
-        jButton2.setBorderPainted(false);
-        jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setDefaultCapable(false);
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
+        jButton3.setText("Cancelar");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(670, Short.MAX_VALUE)
-                .addComponent(jButton2)
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(559, Short.MAX_VALUE)
+                .addComponent(btnSeleccionar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jButton3)
+                .addGap(12, 12, 12))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jButton2)
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 361, 750, 40));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 750, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -207,22 +258,23 @@ public class Form_Consultar extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Form_Consultar().setVisible(true);
+                new Form_Consultar(this).setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableIngrediente;
+    private javax.swing.JTable tableEncabezado;
     private javax.swing.JTextField textCodigo;
     // End of variables declaration//GEN-END:variables
 }

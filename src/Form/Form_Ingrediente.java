@@ -4,6 +4,7 @@
  */
 package Form;
 
+import Clases.CallBack;
 import Clases.Query;
 import Entidad.Ingrediente;
 import Tools.TextPrompt;
@@ -70,6 +71,24 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TextPrompt textrendimiento = new TextPrompt("Redimiento(%)", textRendimiento, Color.black);
         TextPrompt textproveedor = new TextPrompt("Proveedor", textProveedor, Color.black);
         TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
+        
+        textTipoIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_F4) {
+                    Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                        @Override
+                        public void onDataReceived(List<String> data) {
+                            //textTipoIngrediente.setText(data);
+                            System.out.println(data);
+                        }
+                    },"Proveedor");
+                    formConsultar.setVisible(true);
+                    formConsultar.setLocationRelativeTo(null);
+                    formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }
+            }
+        });
     }
 
     /**
@@ -195,6 +214,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         textPrecioUnidad.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         textPrecioUnidad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
+        textRendimiento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         textRendimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         textRendimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -373,14 +393,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         
     }//GEN-LAST:event_editMenuTableActionPerformed
 
+    public void onDataReceived(List<String> data){
+        System.out.println(data);
+    }
+    
     private void textTipoIngredienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTipoIngredienteKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_F4) {
-            //JOptionPane.showMessageDialog(this, "Has presionado la tecla F4.");
-            Form_Consultar formConsultar = new Form_Consultar();
-            formConsultar.setVisible(true);
-            formConsultar.setLocationRelativeTo(this);
-            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        }
+        
     }//GEN-LAST:event_textTipoIngredienteKeyPressed
     
     private void SeletedRowTable(){
@@ -427,4 +445,5 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private javax.swing.JTextField textTipoIngrediente;
     private javax.swing.JTextField textUnidadMedida;
     // End of variables declaration//GEN-END:variables
+
 }

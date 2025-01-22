@@ -11,9 +11,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.tree.RowMapper;
+import java.sql.ResultSetMetaData;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -46,6 +49,37 @@ public class Query<T> extends Conexion {
                 registros.add(mapper.mapRow(rs));
             }
         }
+        return registros;
+    }
+    
+   public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName) throws SQLException {
+        List<Map<String, Object>> registros = new ArrayList<>();
+        String query = "SELECT * FROM " + tableName;
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            // Obtener los nombres de las columnas
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Procesar cada fila del ResultSet
+            while (rs.next()) {
+                // Usar LinkedHashMap para mantener el orden de las columnas
+                Map<String, Object> fila = new LinkedHashMap<>();
+
+                // Asignar los valores de cada columna al mapa respetando el orden de las columnas
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i); // Nombre de la columna
+                    Object columnValue = rs.getObject(i); // Valor de la columna
+                    fila.put(columnName, columnValue); // Insertamos la columna en el mapa
+                }
+
+                // Agregar la fila a la lista de registros
+                registros.add(fila);
+            }
+        }
+
         return registros;
     }
     
