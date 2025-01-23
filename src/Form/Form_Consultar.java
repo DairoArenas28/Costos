@@ -5,7 +5,9 @@
 package Form;
 
 import Clases.CallBack;
+import Clases.Item;
 import Clases.Query;
+import Tools.DescripTable;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +15,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,9 +32,11 @@ public class Form_Consultar extends javax.swing.JFrame {
     
     private CallBack callback;
     
-    private String tableName;
+    private static String tableName;
     
     private List<String> itemSearch;
+    
+    //JComboBox<String> comboSearch = new JComboBox<>();
     
     public Form_Consultar(CallBack callback, String tableName, List<String> itemSearch ) {
         initComponents();
@@ -44,6 +50,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         tableEncabezado.setRowHeight(25);
         
         fillEncabezado();
+        
         
         // Acción para enviar la lista de datos al formulario principal
         btnSeleccionar.addActionListener(new ActionListener() {
@@ -66,12 +73,34 @@ public class Form_Consultar extends javax.swing.JFrame {
             List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName,itemSearch);
             System.out.println(tableName);
             System.out.println(registros);
+            JComboBox<Item> comboSearch = new JComboBox<>();
+            llenarComboBoxConTodosLosPares(registros,comboSearch);
             fillTableFromList(registros, tableEncabezado);
             
         } catch (Exception e) {
             e.getStackTrace();
         }
     }
+    
+    public void llenarComboBoxConTodosLosPares(List<Map<String, Object>> registros, JComboBox<Item> comboSearch) {
+        if (registros == null || registros.isEmpty()) {
+            System.out.println("No hay registros para llenar el combo box.");
+            return;
+        }
+
+        // Limpiar el combo box antes de llenarlo
+        comboSearch.removeAllItems();
+
+        // Obtener el primer registro para extraer las columnas
+        Map<String, Object> firstItem = registros.get(0);
+        String[] columnNames = firstItem.keySet().toArray(new String[0]);
+
+        // Agregar pares clave-valor al combo box
+        for (String columnName : columnNames) {
+            comboSearch.addItem(new Item("Hola", columnName)); // Personaliza el valor según sea necesario
+        }
+    }
+    
     public static void fillTableFromList(List<Map<String, Object>> data, JTable table) {
         if (data == null || data.isEmpty()) {
             return;
@@ -80,7 +109,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         // Obtener los nombres de las columnas del primer mapa (esto asume que todos los mapas tienen las mismas claves)
         Map<String, Object> firstItem = data.get(0);
         String[] columnNames = firstItem.keySet().toArray(new String[0]);
-
+        //System.out.println(firstItem);
         // Crear el modelo de la tabla con los nombres de las columnas
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
 
@@ -110,7 +139,7 @@ public class Form_Consultar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboSearch = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -127,8 +156,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        comboSearch.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -145,7 +173,7 @@ public class Form_Consultar extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, 198, Short.MAX_VALUE)
+                    .addComponent(comboSearch, 0, 198, Short.MAX_VALUE)
                     .addComponent(textCodigo)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -154,7 +182,7 @@ public class Form_Consultar extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
@@ -283,9 +311,9 @@ public class Form_Consultar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JComboBox<String> comboSearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
