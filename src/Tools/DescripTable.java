@@ -12,13 +12,14 @@ import java.util.List;
  */
 public class DescripTable {
     private String tableName;
-    private List<String> descripTable;
 
-    public DescripTable(String tableName) {
-        this.tableName = tableName;
+    List<String> descripTable;
+    
+    public DescripTable() {
     }
     
-    public List<String> Descrip(){
+    public List<String> Descrip(String tableName){
+        
         switch(tableName){
             case "TipoIngrediente":
             descripTable.add("Nombre");

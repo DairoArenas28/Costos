@@ -11,6 +11,8 @@ import Tools.DescripTable;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,15 @@ public class Form_Consultar extends javax.swing.JFrame {
     
     private List<String> itemSearch;
     
+    private List<String> descrip;
+    
+    private static Map<String, Object> firstItem;
+    
+    private static String[] columnNames;
+    
     //JComboBox<String> comboSearch = new JComboBox<>();
+    
+    DescripTable descripTable = new DescripTable();
     
     public Form_Consultar(CallBack callback, String tableName, List<String> itemSearch ) {
         initComponents();
@@ -50,7 +60,8 @@ public class Form_Consultar extends javax.swing.JFrame {
         tableEncabezado.setRowHeight(25);
         
         fillEncabezado();
-        
+        SeletedRowTable();
+        llenarComboBox();
         
         // Acción para enviar la lista de datos al formulario principal
         btnSeleccionar.addActionListener(new ActionListener() {
@@ -66,6 +77,28 @@ public class Form_Consultar extends javax.swing.JFrame {
         });
     }
     
+    private void SeletedRowTable(){
+        tableEncabezado.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Obtener la fila seleccionada
+                int filaSeleccionada = tableEncabezado.getSelectedRow();
+
+                // Verificar que haya una fila seleccionada
+                if (filaSeleccionada != -1) {
+                    // Obtener los datos de la fila
+                    String id = tableEncabezado.getValueAt(filaSeleccionada, 0).toString();
+                    String nombre = tableEncabezado.getValueAt(filaSeleccionada, 1).toString();
+                    String apellido = tableEncabezado.getValueAt(filaSeleccionada, 2).toString();
+
+                    // Mostrar los datos en la consola o en un JOptionPane
+                    System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
+                    JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
+                }
+            }
+        });
+    }
+    
     public void fillEncabezado(){
         Query qry = new Query();
         
@@ -73,8 +106,8 @@ public class Form_Consultar extends javax.swing.JFrame {
             List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName,itemSearch);
             System.out.println(tableName);
             System.out.println(registros);
-            JComboBox<Item> comboSearch = new JComboBox<>();
-            llenarComboBoxConTodosLosPares(registros,comboSearch);
+            
+            
             fillTableFromList(registros, tableEncabezado);
             
         } catch (Exception e) {
@@ -82,23 +115,13 @@ public class Form_Consultar extends javax.swing.JFrame {
         }
     }
     
-    public void llenarComboBoxConTodosLosPares(List<Map<String, Object>> registros, JComboBox<Item> comboSearch) {
-        if (registros == null || registros.isEmpty()) {
-            System.out.println("No hay registros para llenar el combo box.");
-            return;
-        }
-
+    public void llenarComboBox() {
         // Limpiar el combo box antes de llenarlo
         comboSearch.removeAllItems();
 
-        // Obtener el primer registro para extraer las columnas
-        Map<String, Object> firstItem = registros.get(0);
-        String[] columnNames = firstItem.keySet().toArray(new String[0]);
-
         // Agregar pares clave-valor al combo box
-        for (String columnName : columnNames) {
-            comboSearch.addItem(new Item("Hola", columnName)); // Personaliza el valor según sea necesario
-        }
+        comboSearch.addItem("Hola");
+        
     }
     
     public static void fillTableFromList(List<Map<String, Object>> data, JTable table) {
@@ -107,11 +130,16 @@ public class Form_Consultar extends javax.swing.JFrame {
         }
 
         // Obtener los nombres de las columnas del primer mapa (esto asume que todos los mapas tienen las mismas claves)
-        Map<String, Object> firstItem = data.get(0);
-        String[] columnNames = firstItem.keySet().toArray(new String[0]);
+        firstItem = data.get(0);
+        columnNames = firstItem.keySet().toArray(new String[0]);
         //System.out.println(firstItem);
         // Crear el modelo de la tabla con los nombres de las columnas
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Todas las celdas no son editables
+            }
+        };
 
         // Llenar el modelo con los datos
         for (Map<String, Object> rowMap : data) {
@@ -139,8 +167,8 @@ public class Form_Consultar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
-        comboSearch = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        comboSearch = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableEncabezado = new javax.swing.JTable();
@@ -156,8 +184,6 @@ public class Form_Consultar extends javax.swing.JFrame {
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        comboSearch.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-
         jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Consultar");
@@ -166,6 +192,8 @@ public class Form_Consultar extends javax.swing.JFrame {
         jButton1.setFocusPainted(false);
         jButton1.setFocusable(false);
 
+        comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,9 +201,9 @@ public class Form_Consultar extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comboSearch, 0, 198, Short.MAX_VALUE)
-                    .addComponent(textCodigo)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(textCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboSearch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
