@@ -431,6 +431,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     //textTipoIngrediente.setText(data);
                     System.out.println(data);
                     idTextTipoIngrediente.setText(data.get(0));
+                    textTipoIngrediente.setText(data.get(1));
                 }
             },"TipoIngrediente",Arrays.asList("sDescrip",tipoingrediente));
             formConsultar.setVisible(true);

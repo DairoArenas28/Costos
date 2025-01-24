@@ -63,21 +63,10 @@ public class Form_Consultar extends javax.swing.JFrame {
         SeletedRowTable();
         llenarComboBox();
         
-        // Acción para enviar la lista de datos al formulario principal
-        btnSeleccionar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<String> datos = new ArrayList<>();
-                datos.add("Hola");
-                if (callback != null) {
-                    callback.onDataReceived(datos);
-                }
-                dispose(); // Cerrar el formulario secundario
-            }
-        });
+        
     }
     
-    private void SeletedRowTable(){
+    private void SeletedRowTable() {
         tableEncabezado.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -86,14 +75,27 @@ public class Form_Consultar extends javax.swing.JFrame {
 
                 // Verificar que haya una fila seleccionada
                 if (filaSeleccionada != -1) {
-                    // Obtener los datos de la fila
-                    String id = tableEncabezado.getValueAt(filaSeleccionada, 0).toString();
-                    String nombre = tableEncabezado.getValueAt(filaSeleccionada, 1).toString();
-                    String apellido = tableEncabezado.getValueAt(filaSeleccionada, 2).toString();
+                    // Obtener los datos de la fila con validación de nulos
+                    Object idObj = tableEncabezado.getValueAt(filaSeleccionada, 0);
+                    Object nombreObj = tableEncabezado.getValueAt(filaSeleccionada, 1);
+                    Object apellidoObj = tableEncabezado.getValueAt(filaSeleccionada, 2);
 
+                    // Convertir a String, manejando valores nulos
+                    String id = idObj != null ? idObj.toString() : "N/A";
+                    String nombre = nombreObj != null ? nombreObj.toString() : "N/A";
+                    String apellido = apellidoObj != null ? apellidoObj.toString() : "N/A";
+
+                    List<String> datos = new ArrayList<>();
+                    datos.add(id);
+                    datos.add(nombre);
+                    datos.add(apellido);
+                    if (callback != null) {
+                        callback.onDataReceived(datos);
+                    }
+                    dispose(); // Cerrar el formulario secundario
                     // Mostrar los datos en la consola o en un JOptionPane
-                    System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
-                    JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
+                    //System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
+                    //JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
                 }
             }
         });
