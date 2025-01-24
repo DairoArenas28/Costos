@@ -32,6 +32,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
     private boolean result;
     
+    private String id;
     private String codigo;
     private String descrip;
     private String tipoingrediente;
@@ -64,15 +65,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tablePanel.add(scrollPane);
         
-        TextPrompt textcodigo = new TextPrompt("Codigo", textCodigo, Color.black);
-        TextPrompt textdescrip = new TextPrompt("Descripción", textDescrip, Color.black);
-        TextPrompt texttipoingrediente = new TextPrompt("Tipo de ingrediente", textTipoIngrediente, Color.black);
-        TextPrompt textunidadmedida = new TextPrompt("Unidad de medida", textUnidadMedida, Color.black);
-        TextPrompt textpreciounidad = new TextPrompt("Precio unidad", textPrecioUnidad, Color.black);
-        TextPrompt textrendimiento = new TextPrompt("Redimiento(%)", textRendimiento, Color.black);
-        TextPrompt textproveedor = new TextPrompt("Proveedor", textProveedor, Color.black);
-        TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
+        //place holder de los TextField
+        TextPrompt();
         
+        //Ocultar campos 
+        
+        OcultarCampos();
         
         /*textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -113,20 +111,26 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
         textDescrip = new javax.swing.JTextField();
-        textTipoIngrediente = new javax.swing.JTextField();
-        textUnidadMedida = new javax.swing.JTextField();
-        textProveedor = new javax.swing.JTextField();
         textNota = new javax.swing.JTextField();
         textPrecioUnidad = new javax.swing.JFormattedTextField();
         textRendimiento = new javax.swing.JFormattedTextField();
+        jPanel3 = new javax.swing.JPanel();
+        textTipoIngredienteDescrip = new javax.swing.JTextField();
+        textTipoIngrediente = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        textProveedorDescrip = new javax.swing.JTextField();
+        textProveedor = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        textUnidadMedida = new javax.swing.JTextField();
+        textUnidadMedidaDescrip = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         idTextTipoIngrediente = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        idTextProveedor = new javax.swing.JTextField();
+        idTextUnidadMedida = new javax.swing.JTextField();
 
         popupMenuIngrediente.setBackground(new java.awt.Color(0, 71, 171));
         popupMenuIngrediente.setForeground(new java.awt.Color(255, 255, 255));
@@ -158,20 +162,20 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, "", null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Descripción", "Tipo ingrediente", "Unidad medida", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
+                "Id", "Código", "Descripción", "Tipo ingrediente", "Unidad medida", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true, true, false
+                true, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -200,25 +204,6 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         textDescrip.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        textTipoIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textTipoIngrediente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        textTipoIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                textTipoIngredienteKeyPressed(evt);
-            }
-        });
-
-        textUnidadMedida.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textUnidadMedida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-
-        textProveedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textProveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
-        textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                textProveedorKeyPressed(evt);
-            }
-        });
-
         textNota.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textNota.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
@@ -230,6 +215,59 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         textRendimiento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         textRendimiento.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        textTipoIngredienteDescrip.setBackground(new java.awt.Color(204, 204, 204));
+        textTipoIngredienteDescrip.setText("Presionar F4");
+        textTipoIngredienteDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textTipoIngredienteDescrip.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        textTipoIngredienteDescrip.setEnabled(false);
+        jPanel3.add(textTipoIngredienteDescrip, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 270, 30));
+
+        textTipoIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textTipoIngrediente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textTipoIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textTipoIngredienteKeyPressed(evt);
+            }
+        });
+        jPanel3.add(textTipoIngrediente, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 30));
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        textProveedorDescrip.setBackground(new java.awt.Color(204, 204, 204));
+        textProveedorDescrip.setText("Presionar F4");
+        textProveedorDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textProveedorDescrip.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        textProveedorDescrip.setEnabled(false);
+        jPanel2.add(textProveedorDescrip, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 260, 30));
+
+        textProveedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textProveedor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textProveedorKeyPressed(evt);
+            }
+        });
+        jPanel2.add(textProveedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 30));
+
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        textUnidadMedida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textUnidadMedida.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textUnidadMedidaKeyPressed(evt);
+            }
+        });
+        jPanel4.add(textUnidadMedida, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 30));
+
+        textUnidadMedidaDescrip.setBackground(new java.awt.Color(204, 204, 204));
+        textUnidadMedidaDescrip.setText("Presionar F4");
+        textUnidadMedidaDescrip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        textUnidadMedidaDescrip.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        textUnidadMedidaDescrip.setEnabled(false);
+        jPanel4.add(textUnidadMedidaDescrip, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 120, 30));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -238,43 +276,43 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(textPrecioUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textRendimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textNota))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textTipoIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(textNota)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(textNota, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textNota, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textPrecioUnidad)
-                    .addComponent(textRendimiento))
-                .addContainerGap(8, Short.MAX_VALUE))
+                    .addComponent(textRendimiento)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnGuardar.setBackground(new java.awt.Color(0, 71, 171));
+        btnGuardar.setBackground(new java.awt.Color(102, 204, 0));
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -287,15 +325,18 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("jButton2");
+        btnEditar.setBackground(new java.awt.Color(0, 71, 171));
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("Editar");
+        btnEditar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
 
         jButton3.setText("jButton3");
 
         jButton4.setText("jButton4");
 
-        jTextField2.setText("jTextField2");
+        idTextTipoIngrediente.setOpaque(true);
 
-        jTextField3.setText("jTextField3");
+        idTextProveedor.setOpaque(true);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,15 +346,15 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -323,14 +364,14 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
                         .addComponent(jButton3)
                         .addComponent(jButton4)
                         .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -339,13 +380,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +394,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -366,6 +406,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             tableModel.setRowCount(0);
             for (Ingrediente ingrediente : ingredientes) {
                 tableModel.addRow(new Object[]{
+                    ingrediente.getIngrediente(),
                     ingrediente.getCodigo(),
                     ingrediente.getDescrip(),
                     ingrediente.getTipoingrediente(),
@@ -382,22 +423,23 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         }
         
     }
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         codigo = textCodigo.getText();
         descrip = textDescrip.getText();
-        tipoingrediente = textTipoIngrediente.getText();
-        unidadmedida = textUnidadMedida.getText();
+        tipoingrediente = idTextTipoIngrediente.getText();
+        unidadmedida = idTextUnidadMedida.getText();
         preciounidad = Float.parseFloat(textPrecioUnidad.getText());
         rendimiento = Float.parseFloat(textRendimiento.getText());
-        proveedor = textProveedor.getText();
+        proveedor = idTextProveedor.getText();
         nota = textNota.getText();
         
         try {
             Map<String, Object> columnValues = new HashMap<>();
-            columnValues.put("iTipoIngrediente", 3);
-            columnValues.put("iMedida", 1);
-            columnValues.put("iProveedor", 1);
+            columnValues.put("iTipoIngrediente", tipoingrediente);
+            columnValues.put("iMedida", unidadmedida);
+            columnValues.put("iProveedor", proveedor);
             columnValues.put("sCodigo", codigo);
             columnValues.put("sDescrip", descrip);
             columnValues.put("yPrecio", preciounidad);
@@ -406,6 +448,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             columnValues.put("bInactivo", false);
 
             result = qry.InsertarRegistro("Ingrediente", columnValues);
+            LimpiarCampos();
+            fillIngrediente();
             if (result){
                 JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
             }
@@ -418,28 +462,6 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         
     }//GEN-LAST:event_editMenuTableActionPerformed
 
-    public void onDataReceived(List<String> data){
-        System.out.println(data);
-    }
-    
-    private void textTipoIngredienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTipoIngredienteKeyPressed
-        tipoingrediente = textTipoIngrediente.getText();
-        if (evt.getKeyCode() == KeyEvent.VK_F4) {
-            Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
-                @Override
-                public void onDataReceived(List<String> data) {
-                    //textTipoIngrediente.setText(data);
-                    System.out.println(data);
-                    idTextTipoIngrediente.setText(data.get(0));
-                    textTipoIngrediente.setText(data.get(1));
-                }
-            },"TipoIngrediente",Arrays.asList("sDescrip",tipoingrediente));
-            formConsultar.setVisible(true);
-            formConsultar.setLocationRelativeTo(null);
-            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        }
-    }//GEN-LAST:event_textTipoIngredienteKeyPressed
-
     private void textProveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textProveedorKeyPressed
         proveedor = textProveedor.getText();
         if (evt.getKeyCode() == KeyEvent.VK_F4) {
@@ -447,7 +469,10 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 @Override
                 public void onDataReceived(List<String> data) {
                     //textTipoIngrediente.setText(data);
-                    System.out.println(data);
+                    //System.out.println(data);
+                    idTextProveedor.setText(data.get(0));
+                    textProveedor.setText(data.get(1));
+                    textProveedorDescrip.setText(data.get(2));
                 }
             },"Proveedor",Arrays.asList("sNombre",proveedor));
             formConsultar.setVisible(true);
@@ -455,7 +480,49 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         }
     }//GEN-LAST:event_textProveedorKeyPressed
-    
+
+    private void textTipoIngredienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTipoIngredienteKeyPressed
+        tipoingrediente = textTipoIngrediente.getText();
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                @Override
+                public void onDataReceived(List<String> data) {
+                    //textTipoIngrediente.setText(data);
+                    //System.out.println(data);
+                    idTextTipoIngrediente.setText(data.get(0));
+                    textTipoIngrediente.setText(data.get(1));
+                    textTipoIngredienteDescrip.setText(data.get(2));
+                }
+            },"TipoIngrediente",Arrays.asList("sNombre",tipoingrediente));
+            formConsultar.setVisible(true);
+            formConsultar.setLocationRelativeTo(null);
+            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+    }//GEN-LAST:event_textTipoIngredienteKeyPressed
+
+    private void textUnidadMedidaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textUnidadMedidaKeyPressed
+        unidadmedida = textUnidadMedida.getText();
+        if (evt.getKeyCode() == KeyEvent.VK_F4) {
+            Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                @Override
+                public void onDataReceived(List<String> data) {
+                    //textTipoIngrediente.setText(data);
+                    //System.out.println(data);
+                    idTextUnidadMedida.setText(data.get(0));
+                    textUnidadMedida.setText(data.get(1));
+                    textUnidadMedidaDescrip.setText(data.get(2));
+                }
+            },"Medida",Arrays.asList("sNombre",unidadmedida));
+            formConsultar.setVisible(true);
+            formConsultar.setLocationRelativeTo(null);
+            formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        }
+    }//GEN-LAST:event_textUnidadMedidaKeyPressed
+
+    public void onDataReceived(List<String> data){
+        System.out.println(data);
+    }
+        
     private void SeletedRowTable(){
         tableIngrediente.addMouseListener(new MouseAdapter() {
             @Override
@@ -478,19 +545,55 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         });
     }
 
+    public void LimpiarCampos(){
+        idTextTipoIngrediente.setText(""); 
+        idTextProveedor.setText("");
+        idTextUnidadMedida.setText("");
+        textUnidadMedida.setText("");
+        textUnidadMedidaDescrip.setText("");
+        textCodigo.setText("");
+        textDescrip.setText("");
+        textNota.setText("");
+        textPrecioUnidad.setText("");
+        textRendimiento.setText("");
+        textProveedor.setText("");
+        textProveedorDescrip.setText("");
+        textTipoIngrediente.setText("");
+        textTipoIngredienteDescrip.setText("");
+    }
+    
+    private void OcultarCampos(){
+        idTextUnidadMedida.setVisible(false);
+        idTextProveedor.setVisible(false);
+        idTextTipoIngrediente.setVisible(false);
+    }
+    
+    private void TextPrompt(){
+        TextPrompt textcodigo = new TextPrompt("Codigo", textCodigo, Color.black);
+        TextPrompt textdescrip = new TextPrompt("Descripción", textDescrip, Color.black);
+        TextPrompt texttipoingrediente = new TextPrompt("Tipo de ingrediente", textTipoIngrediente, Color.black);
+        TextPrompt textunidadmedida = new TextPrompt("Unidad de medida", textUnidadMedida, Color.black);
+        TextPrompt textpreciounidad = new TextPrompt("Precio unidad", textPrecioUnidad, Color.black);
+        TextPrompt textrendimiento = new TextPrompt("Redimiento(%)", textRendimiento, Color.black);
+        TextPrompt textproveedor = new TextPrompt("Proveedor", textProveedor, Color.black);
+        TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JMenuItem deleteMenuTable;
     private javax.swing.JMenuItem editMenuTable;
+    private javax.swing.JTextField idTextProveedor;
     private javax.swing.JTextField idTextTipoIngrediente;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField idTextUnidadMedida;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JPopupMenu popupMenuIngrediente;
     private javax.swing.JTable tableIngrediente;
     private javax.swing.JPanel tablePanel;
@@ -499,9 +602,12 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private javax.swing.JTextField textNota;
     private javax.swing.JFormattedTextField textPrecioUnidad;
     private javax.swing.JTextField textProveedor;
+    private javax.swing.JTextField textProveedorDescrip;
     private javax.swing.JFormattedTextField textRendimiento;
     private javax.swing.JTextField textTipoIngrediente;
+    private javax.swing.JTextField textTipoIngredienteDescrip;
     private javax.swing.JTextField textUnidadMedida;
+    private javax.swing.JTextField textUnidadMedidaDescrip;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -11,6 +11,7 @@ import Clases.Query.RowMapper;
  * @author DanielSantiago
  */
 public class Ingrediente {
+    private int ingrediente;
     private int tipoingrediente;
     private int medida;
     private int proveedor;
@@ -21,7 +22,8 @@ public class Ingrediente {
     private String nota;
     private boolean inactivo;
 
-    public Ingrediente(int tipoingrediente, int medida, int proveedor, String codigo, String descrip, float preciounidad, float rendimiento, String nota, boolean inactivo) {
+    public Ingrediente(int ingrediente, int tipoingrediente, int medida, int proveedor, String codigo, String descrip, float preciounidad, float rendimiento, String nota, boolean inactivo) {
+        this.ingrediente = ingrediente;
         this.tipoingrediente = tipoingrediente;
         this.medida = medida;
         this.proveedor = proveedor;
@@ -33,6 +35,15 @@ public class Ingrediente {
         this.inactivo = inactivo;
     }
 
+    public int getIngrediente() {
+        return ingrediente;
+    }
+
+    public void setIngrediente(int ingrediente) {
+        this.ingrediente = ingrediente;
+    }
+
+    
     public int getTipoingrediente() {
         return tipoingrediente;
     }
@@ -108,6 +119,7 @@ public class Ingrediente {
     public static RowMapper<Ingrediente> rowMapper() {
         return (rs) -> {
             return new Ingrediente(
+                rs.getInt("iIngrediente"),
                 rs.getInt("iTipoIngrediente"),
                 rs.getInt("iMedida"),
                 rs.getInt("iProveedor"),

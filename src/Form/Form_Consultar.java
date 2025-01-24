@@ -75,22 +75,18 @@ public class Form_Consultar extends javax.swing.JFrame {
 
                 // Verificar que haya una fila seleccionada
                 if (filaSeleccionada != -1) {
-                    // Obtener los datos de la fila con validación de nulos
-                    Object idObj = tableEncabezado.getValueAt(filaSeleccionada, 0);
-                    Object nombreObj = tableEncabezado.getValueAt(filaSeleccionada, 1);
-                    Object apellidoObj = tableEncabezado.getValueAt(filaSeleccionada, 2);
-
-                    // Convertir a String, manejando valores nulos
-                    String id = idObj != null ? idObj.toString() : "N/A";
-                    String nombre = nombreObj != null ? nombreObj.toString() : "N/A";
-                    String apellido = apellidoObj != null ? apellidoObj.toString() : "N/A";
-
-                    List<String> datos = new ArrayList<>();
-                    datos.add(id);
-                    datos.add(nombre);
-                    datos.add(apellido);
+                    List<String> dato = new ArrayList<>();
+                    for (int i = 0; i < tableEncabezado.getColumnCount(); i++ ){
+                        String data = tableEncabezado.getValueAt(filaSeleccionada, i).toString();
+                        if (data == null){
+                            data = "N/A";
+                        } else {
+                            dato.add(data);
+                        }
+                        data = "";
+                    }
                     if (callback != null) {
-                        callback.onDataReceived(datos);
+                        callback.onDataReceived(dato);
                     }
                     dispose(); // Cerrar el formulario secundario
                     // Mostrar los datos en la consola o en un JOptionPane
