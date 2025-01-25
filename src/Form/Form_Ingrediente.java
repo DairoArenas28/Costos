@@ -402,6 +402,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private void fillIngrediente(){
         try {
             List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
+            List<Map<String, Object>> registros = qry.obtenerRegistrosIngredientes("Ingrediente");
+            System.out.println("Nuevo metodo para obtener registros: " + registros);
             DefaultTableModel tableModel = (DefaultTableModel) tableIngrediente.getModel();
             tableModel.setRowCount(0);
             for (Ingrediente ingrediente : ingredientes) {

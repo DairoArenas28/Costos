@@ -76,22 +76,22 @@ public class Form_Consultar extends javax.swing.JFrame {
                 // Verificar que haya una fila seleccionada
                 if (filaSeleccionada != -1) {
                     List<String> dato = new ArrayList<>();
-                    for (int i = 0; i < tableEncabezado.getColumnCount(); i++ ){
-                        String data = tableEncabezado.getValueAt(filaSeleccionada, i).toString();
-                        if (data == null){
+                    for (int i = 0; i < tableEncabezado.getColumnCount(); i++) {
+                        Object cellValue = tableEncabezado.getValueAt(filaSeleccionada, i);
+                        String data;
+
+                        if (cellValue == null) {
                             data = "N/A";
                         } else {
-                            dato.add(data);
+                            data = cellValue.toString();
                         }
-                        data = "";
+
+                        dato.add(data);
                     }
                     if (callback != null) {
                         callback.onDataReceived(dato);
                     }
                     dispose(); // Cerrar el formulario secundario
-                    // Mostrar los datos en la consola o en un JOptionPane
-                    //System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
-                    //JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
                 }
             }
         });
@@ -102,10 +102,8 @@ public class Form_Consultar extends javax.swing.JFrame {
         
         try {
             List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName,itemSearch);
-            System.out.println(tableName);
-            System.out.println(registros);
-            
-            
+            //System.out.println(tableName);
+            //System.out.println(registros);
             fillTableFromList(registros, tableEncabezado);
             
         } catch (Exception e) {

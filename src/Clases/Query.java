@@ -86,7 +86,7 @@ public class Query<T> extends Conexion {
         return registros;
     }
     
-    public boolean InsertarRegistro(String tableName, Map<String, Object> columnValues) throws SQLException {
+   public boolean InsertarRegistro(String tableName, Map<String, Object> columnValues) throws SQLException {
         // Generar los nombres de las columnas y los placeholders para los valores
         String columns = String.join(", ", columnValues.keySet());
         String placeholders = String.join(", ", Collections.nCopies(columnValues.size(), "?"));
@@ -101,5 +101,48 @@ public class Query<T> extends Conexion {
             }
             return pstmt.executeUpdate() > 0;
         }
+    }
+   
+   
+   //Ingrediente
+    public List<T> ObtenerRegistrosIngredientes(String tableName, RowMapper<T> mapper) throws SQLException {
+        List<T> registros = new ArrayList<>();
+        String query = "SELECT P.sNIT,P.sNombre,I.sCodigo,I.sDescrip,* FROM " + tableName + " I inner join Proveedor P " +"on I.iProveedor = P.iProveedor";
+        
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                registros.add(mapper.mapRow(rs));
+            }
+        }
+        return registros;
+    }
+    
+    public List<Map<String, Object>> obtenerRegistrosIngredientes(String tableName) throws SQLException {
+        List<Map<String, Object>> registros = new ArrayList<>();
+        String query = "SELECT P.sNIT, P.sNombre, I.sCodigo, I.sDescrip " +
+                       "FROM " + tableName + " I " +
+                       "INNER JOIN Proveedor P ON I.iProveedor = P.iProveedor";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            // Obtener los metadatos para saber cuántas columnas tiene el resultado
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                // Iterar sobre las columnas y llenar el mapa
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = rs.getObject(i);
+                    row.put(columnName, value);
+                }
+                registros.add(row);
+            }
+        }
+        return registros;
     }
 }
