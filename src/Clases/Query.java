@@ -127,10 +127,13 @@ public class Query<T> extends Conexion {
         String query = "SELECT I.iIngrediente AS iIngrediente, " +
                "I.sCodigo AS ingredienteCodigo, " +
                "I.sDescrip AS ingredienteDescrip, " +
+               "TI.iTipoIngrediente AS tipoId, " +
                "TI.sCodigo AS tipoCodigo, " +
                "TI.sNombre AS tipoNombre, " +
+               "M.iMedida AS medidaId, " +
                "M.sCodigo AS medidaCodigo, " +
                "M.sNombre AS medidaNombre, " +
+               "P.iProveedor AS proveedorId, " +
                "P.sNIT AS proveedorNit, " +
                "P.sNombre AS proveedorNombre, " +
                "I.yPrecio AS ingredientePrecio, " +
@@ -169,6 +172,59 @@ public class Query<T> extends Conexion {
         }
 
         return registros;
+    }
+    
+    public boolean ActualizarRegistros(String tabla, Map<String, Object> registro, String clavePrimaria) throws SQLException {
+            if (registro == null || registro.isEmpty()) {
+            System.out.println("No hay registros para actualizar.");
+            return false;
+        }
+
+        // Construir la consulta SQL dinámicamente
+        StringBuilder sql = new StringBuilder("UPDATE ").append(tabla).append(" SET ");
+        for (String columna : registro.keySet()) {
+            if (!columna.equals(clavePrimaria)) {
+                sql.append(columna).append(" = ?, ");
+            }
+        }
+
+        // Eliminar la coma final y agregar la cláusula WHERE
+        sql.deleteCharAt(sql.lastIndexOf(","));
+        sql.append(" WHERE ").append(clavePrimaria).append(" = ?");
+        
+        System.out.println("Consulta generada: " + sql); // Debugging: muestra la consulta generada
+
+        try (PreparedStatement statement = conn.prepareStatement(sql.toString())) {
+            // Asignar valores a los parámetros
+            int index = 1;
+            for (Map.Entry<String, Object> entry : registro.entrySet()) {
+                if (!entry.getKey().equals(clavePrimaria)) {
+                     System.out.println("Índice " + index + ": Columna " + entry.getKey() + " = " + entry.getValue());
+                    statement.setObject(index++, entry.getValue());
+                }
+            }
+            //System.out.println("Índice " + index + ": Clave primaria (" + clavePrimaria + ") = " + registro.get(clavePrimaria));
+            // Agregar el valor de la clave primaria
+            statement.setObject(index, registro.get(clavePrimaria));
+
+            // Ejecutar la consulta y verificar si se actualizó algún registro
+            int filasActualizadas = statement.executeUpdate();
+            //System.out.println("Filas actualizadas: " + filasActualizadas); // Debugging
+            return filasActualizadas > 0; // Devuelve true si al menos una fila fue actualizada
+        } catch (SQLException e) {
+            System.err.println("Error actualizando registro: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    // Método genérico para eliminar un registro por ID
+    public boolean EliminarRegistroPorId(String tableName, String idColumnName, int id) throws SQLException {
+        String query = "DELETE FROM " + tableName + " WHERE " + idColumnName + " = ?";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        }
     }
     
 }

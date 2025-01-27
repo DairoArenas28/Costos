@@ -7,16 +7,22 @@ package Form;
 import Clases.CallBack;
 import Clases.Query;
 import Entidad.Ingrediente;
+import Tools.ExportToExcel;
 import Tools.TextPrompt;
 import java.awt.Color;
 import java.awt.ScrollPane;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -50,11 +56,14 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     public Form_Ingrediente() {
         initComponents();
         
-        ocultarColumna(tableIngrediente, 0);
+        //ocultarColumna(tableIngrediente, 9);
+        ocultarColumnas(tableIngrediente, Arrays.asList(0,3,6,9));
+        //ocultarColumna(tableIngrediente, 6);
+        //ocultarColumna(tableIngrediente, 9);
         
         fillIngrediente();
         
-        SeletedRowTable();
+        //SeletedRowTable();
         //JScrollPane scrollPane = new JScrollPane(tableIngrediente);
         //btnGuardar.putClientProperty("JComponent.roundRect", true);
         //UIManager.setLookAndFeel(new FlatCarbonIJTheme());
@@ -129,12 +138,13 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         textUnidadMedidaDescrip = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnExportExcel = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         idTextTipoIngrediente = new javax.swing.JTextField();
         idTextProveedor = new javax.swing.JTextField();
         idTextUnidadMedida = new javax.swing.JTextField();
+        idTextIngrediente = new javax.swing.JTextField();
 
         popupMenuIngrediente.setBackground(new java.awt.Color(0, 71, 171));
         popupMenuIngrediente.setForeground(new java.awt.Color(255, 255, 255));
@@ -144,6 +154,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         editMenuTable.setForeground(new java.awt.Color(255, 255, 255));
         editMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/editar_24.png"))); // NOI18N
         editMenuTable.setText("Editar");
+        editMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editMenuTableMouseClicked(evt);
+            }
+        });
         editMenuTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editMenuTableActionPerformed(evt);
@@ -155,6 +170,16 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         deleteMenuTable.setForeground(new java.awt.Color(255, 255, 255));
         deleteMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar_2_24.png"))); // NOI18N
         deleteMenuTable.setText("Eliminar");
+        deleteMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteMenuTableMouseClicked(evt);
+            }
+        });
+        deleteMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuTableActionPerformed(evt);
+            }
+        });
         popupMenuIngrediente.add(deleteMenuTable);
 
         setMinimumSize(new java.awt.Dimension(1050, 510));
@@ -166,20 +191,20 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "", null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, "", null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Código", "Descripción", "Cod Tipo ingrediente", "Tipo ingrediente", "Cod Unidad medida", "Unidad medida", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
+                "Id", "Código", "Descripción", "Id Tipo ingrediente", "Cod Tipo ingrediente", "Tipo ingrediente", "Id Unidad medida", "Cod Unidad medida", "Unidad medida", "Id Proveedor", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -329,12 +354,22 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             }
         });
 
-        btnEditar.setBackground(new java.awt.Color(0, 71, 171));
-        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditar.setText("Editar");
-        btnEditar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
+        btnLimpiar.setBackground(new java.awt.Color(0, 71, 171));
+        btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("jButton3");
+        btnExportExcel.setText("Exportar Excel");
+        btnExportExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportExcelActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("jButton4");
 
@@ -342,23 +377,27 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         idTextProveedor.setOpaque(true);
 
+        idTextIngrediente.setOpaque(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(idTextIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btnExportExcel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -368,14 +407,15 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton3)
+                        .addComponent(btnExportExcel)
                         .addComponent(jButton4)
                         .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(idTextIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -405,7 +445,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
     private void fillIngrediente(){
         try {
-            List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
+            //List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
             List<Map<String, Object>> registros = qry.ObtenerRegistrosIngredientes("Ingrediente");
             //System.out.println("Nuevo metodo para obtener registros: " + registros);
             DefaultTableModel tableModel = (DefaultTableModel) tableIngrediente.getModel();
@@ -415,10 +455,13 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     registro.get("iIngrediente"),         // ID del ingrediente
                     registro.get("ingredienteCodigo"),   // Código del ingrediente
                     registro.get("ingredienteDescrip"),  // Descripción del ingrediente
+                    registro.get("tipoId"),
                     registro.get("tipoCodigo"),          // Código del tipo de ingrediente
                     registro.get("tipoNombre"),          // Nombre del tipo de ingrediente
+                    registro.get("medidaId"),        // Id de la medida
                     registro.get("medidaCodigo"),        // Código de la medida
                     registro.get("medidaNombre"),        // Nombre de la medida
+                    registro.get("proveedorId"),        // NIT del proveedor
                     registro.get("proveedorNit"),        // NIT del proveedor
                     registro.get("proveedorNombre"),     // Nombre del proveedor
                     registro.get("ingredientePrecio"),   // Precio del ingrediente
@@ -452,8 +495,18 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         table.getColumnModel().removeColumn(columna);
     }
     
+    // Método para ocultar varias columnas usando una lista
+    public static void ocultarColumnas(JTable table, List<Integer> columnIndices) {
+        // Ordenar los índices en orden descendente para evitar problemas al eliminar columnas
+        Collections.sort(columnIndices, Collections.reverseOrder());
+        for (int columnIndex : columnIndices) {
+            ocultarColumna(table, columnIndex);
+        }
+    }
+    
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        id = idTextIngrediente.getText();
         codigo = textCodigo.getText();
         descrip = textDescrip.getText();
         tipoingrediente = idTextTipoIngrediente.getText();
@@ -463,31 +516,97 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         proveedor = idTextProveedor.getText();
         nota = textNota.getText();
         
-        try {
-            Map<String, Object> columnValues = new HashMap<>();
-            columnValues.put("iTipoIngrediente", tipoingrediente);
-            columnValues.put("iMedida", unidadmedida);
-            columnValues.put("iProveedor", proveedor);
-            columnValues.put("sCodigo", codigo);
-            columnValues.put("sDescrip", descrip);
-            columnValues.put("yPrecio", preciounidad);
-            columnValues.put("rRendimiento", rendimiento);
-            columnValues.put("mNota", nota);
-            columnValues.put("bInactivo", false);
+        if(!"".equals(id)){
+            try {
+                Map<String, Object> columnValues = new HashMap<>();
+                columnValues.put("iTipoIngrediente", tipoingrediente);
+                columnValues.put("iMedida", unidadmedida);
+                columnValues.put("iProveedor", proveedor);
+                columnValues.put("sCodigo", codigo);
+                columnValues.put("sDescrip", descrip);
+                columnValues.put("yPrecio", preciounidad);
+                columnValues.put("rRendimiento", rendimiento);
+                columnValues.put("mNota", nota);
+                columnValues.put("bInactivo", false);
+                columnValues.put("iIngrediente", id);
 
-            result = qry.InsertarRegistro("Ingrediente", columnValues);
-            LimpiarCampos();
-            fillIngrediente();
-            if (result){
-                JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
+                result = qry.ActualizarRegistros("Ingrediente", columnValues, "iIngrediente");
+                LimpiarCampos();
+                fillIngrediente();
+                if (result){
+                    JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            
+
+            try {
+                Map<String, Object> columnValues = new HashMap<>();
+                columnValues.put("iTipoIngrediente", tipoingrediente);
+                columnValues.put("iMedida", unidadmedida);
+                columnValues.put("iProveedor", proveedor);
+                columnValues.put("sCodigo", codigo);
+                columnValues.put("sDescrip", descrip);
+                columnValues.put("yPrecio", preciounidad);
+                columnValues.put("rRendimiento", rendimiento);
+                columnValues.put("mNota", nota);
+                columnValues.put("bInactivo", false);
+
+                result = qry.InsertarRegistro("Ingrediente", columnValues);
+                LimpiarCampos();
+                fillIngrediente();
+                if (result){
+                    JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void editMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuTableActionPerformed
         
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tableIngrediente.getSelectedRow();
+
+        // Verificar que haya una fila seleccionada
+        if (filaSeleccionada != -1) {
+            // Convertir el índice de la fila seleccionada al índice del modelo de datos
+            int filaModelo = tableIngrediente.convertRowIndexToModel(filaSeleccionada);
+
+            idTextIngrediente.setText(tableIngrediente.getModel().getValueAt(filaModelo, 0).toString());
+            textCodigo.setText(tableIngrediente.getModel().getValueAt(filaModelo, 1).toString());
+            textDescrip.setText(tableIngrediente.getModel().getValueAt(filaModelo, 2).toString());
+            idTextTipoIngrediente.setText(tableIngrediente.getModel().getValueAt(filaModelo, 3).toString());
+            textTipoIngrediente.setText(tableIngrediente.getModel().getValueAt(filaModelo, 4).toString());
+            textTipoIngredienteDescrip.setText(tableIngrediente.getModel().getValueAt(filaModelo, 5).toString());
+            idTextUnidadMedida.setText(tableIngrediente.getModel().getValueAt(filaModelo, 6).toString());
+            textUnidadMedida.setText(tableIngrediente.getModel().getValueAt(filaModelo, 7).toString());
+            textUnidadMedidaDescrip.setText(tableIngrediente.getModel().getValueAt(filaModelo, 8).toString());
+            idTextProveedor.setText(tableIngrediente.getModel().getValueAt(filaModelo, 9).toString());
+            textProveedor.setText(tableIngrediente.getModel().getValueAt(filaModelo, 10).toString());
+            textProveedorDescrip.setText(tableIngrediente.getModel().getValueAt(filaModelo, 11).toString());
+            textPrecioUnidad.setText(tableIngrediente.getModel().getValueAt(filaModelo, 12).toString());
+            textRendimiento.setText(tableIngrediente.getModel().getValueAt(filaModelo, 13).toString());
+            textNota.setText(tableIngrediente.getModel().getValueAt(filaModelo, 14).toString());
+
+            // Obtener los datos directamente del modelo de datos
+            //String id = tableIngrediente.getModel().getValueAt(filaModelo, 0).toString(); // Índice en el modelo
+            //String nombre = tableIngrediente.getModel().getValueAt(filaModelo, 1).toString();
+            //String apellido = tableIngrediente.getModel().getValueAt(filaModelo, 2).toString();
+
+            // Mostrar los datos en la consola o en un JOptionPane
+            //System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);
+            //JOptionPane.showMessageDialog(null, "ID: " + id + "\nNombre: " + nombre + "\nApellido: " + apellido);
+        }
     }//GEN-LAST:event_editMenuTableActionPerformed
 
     private void textProveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textProveedorKeyPressed
@@ -547,6 +666,76 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_textUnidadMedidaKeyPressed
 
+    private void editMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMenuTableMouseClicked
+        
+    }//GEN-LAST:event_editMenuTableMouseClicked
+
+    private void btnExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportExcelActionPerformed
+        ExportToExcel obj;
+
+        try {
+            obj = new ExportToExcel();
+            obj.exportarExcel(tableIngrediente);
+        } catch (IOException ex) {
+            System.out.println("Error: " + ex);
+        }
+    }//GEN-LAST:event_btnExportExcelActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        LimpiarCampos();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void deleteMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMenuTableMouseClicked
+        
+        
+    }//GEN-LAST:event_deleteMenuTableMouseClicked
+
+    private void deleteMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuTableActionPerformed
+        //JOptionPane.showMessageDialog(null, "Error al eliminar el registro.");
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tableIngrediente.getSelectedRow();
+
+        // Verificar que haya una fila seleccionada
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar el registro?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                // Convertir el índice de la fila seleccionada al índice del modelo de datos
+                int filaModelo = tableIngrediente.convertRowIndexToModel(filaSeleccionada);
+
+                idTextIngrediente.setText(tableIngrediente.getModel().getValueAt(filaModelo, 0).toString());
+
+                try {
+                    // Validar ID del ingrediente
+                    int idIngrediente = Integer.parseInt(idTextIngrediente.getText());
+
+                    // Eliminar registro
+                    result = qry.EliminarRegistroPorId("Ingrediente", "iIngrediente", idIngrediente);
+
+                    if (result) {
+                        JOptionPane.showMessageDialog(null, "Registro eliminado correctamente");
+                        LimpiarCampos();
+                        fillIngrediente();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar el registro.");
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "El ID del ingrediente no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Form_Ingrediente.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el registro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteMenuTableActionPerformed
+
     public void onDataReceived(List<String> data){
         System.out.println(data);
     }
@@ -577,6 +766,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     }
 
     public void LimpiarCampos(){
+        idTextIngrediente.setText("");
         idTextTipoIngrediente.setText(""); 
         idTextProveedor.setText("");
         idTextUnidadMedida.setText("");
@@ -594,6 +784,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     }
     
     private void OcultarCampos(){
+        idTextIngrediente.setVisible(false);
         idTextUnidadMedida.setVisible(false);
         idTextProveedor.setVisible(false);
         idTextTipoIngrediente.setVisible(false);
@@ -610,14 +801,15 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExportExcel;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JMenuItem deleteMenuTable;
     private javax.swing.JMenuItem editMenuTable;
+    private javax.swing.JTextField idTextIngrediente;
     private javax.swing.JTextField idTextProveedor;
     private javax.swing.JTextField idTextTipoIngrediente;
     private javax.swing.JTextField idTextUnidadMedida;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
