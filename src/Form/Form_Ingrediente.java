@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -48,6 +49,9 @@ public class Form_Ingrediente extends javax.swing.JPanel {
      */
     public Form_Ingrediente() {
         initComponents();
+        
+        ocultarColumna(tableIngrediente, 0);
+        
         fillIngrediente();
         
         SeletedRowTable();
@@ -162,20 +166,20 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "", null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, "", null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Código", "Descripción", "Tipo ingrediente", "Unidad medida", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
+                "Id", "Código", "Descripción", "Cod Tipo ingrediente", "Tipo ingrediente", "Cod Unidad medida", "Unidad medida", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -402,11 +406,27 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private void fillIngrediente(){
         try {
             List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
-            List<Map<String, Object>> registros = qry.obtenerRegistrosIngredientes("Ingrediente");
-            System.out.println("Nuevo metodo para obtener registros: " + registros);
+            List<Map<String, Object>> registros = qry.ObtenerRegistrosIngredientes("Ingrediente");
+            //System.out.println("Nuevo metodo para obtener registros: " + registros);
             DefaultTableModel tableModel = (DefaultTableModel) tableIngrediente.getModel();
             tableModel.setRowCount(0);
-            for (Ingrediente ingrediente : ingredientes) {
+            for (Map<String, Object> registro : registros) {
+                tableModel.addRow(new Object[]{
+                    registro.get("iIngrediente"),         // ID del ingrediente
+                    registro.get("ingredienteCodigo"),   // Código del ingrediente
+                    registro.get("ingredienteDescrip"),  // Descripción del ingrediente
+                    registro.get("tipoCodigo"),          // Código del tipo de ingrediente
+                    registro.get("tipoNombre"),          // Nombre del tipo de ingrediente
+                    registro.get("medidaCodigo"),        // Código de la medida
+                    registro.get("medidaNombre"),        // Nombre de la medida
+                    registro.get("proveedorNit"),        // NIT del proveedor
+                    registro.get("proveedorNombre"),     // Nombre del proveedor
+                    registro.get("ingredientePrecio"),   // Precio del ingrediente
+                    registro.get("ingredienteRendimiento"), // Rendimiento del ingrediente
+                    registro.get("ingredienteNota")      // Nota del ingrediente
+                });
+            }
+            /*for (Ingrediente ingrediente : ingredientes) {
                 tableModel.addRow(new Object[]{
                     ingrediente.getIngrediente(),
                     ingrediente.getCodigo(),
@@ -419,11 +439,17 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     ingrediente.getNota(),
                     ingrediente.isInactivo()
                 });
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
         
+    }
+    
+    // Método para ocultar una columna por índice
+    public static void ocultarColumna(JTable table, int columnIndex) {
+        TableColumn columna = table.getColumnModel().getColumn(columnIndex);
+        table.getColumnModel().removeColumn(columna);
     }
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -525,7 +551,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         System.out.println(data);
     }
         
-    private void SeletedRowTable(){
+    private void SeletedRowTable() {
         tableIngrediente.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -534,10 +560,13 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
                 // Verificar que haya una fila seleccionada
                 if (filaSeleccionada != -1) {
-                    // Obtener los datos de la fila
-                    String id = tableIngrediente.getValueAt(filaSeleccionada, 0).toString();
-                    String nombre = tableIngrediente.getValueAt(filaSeleccionada, 1).toString();
-                    String apellido = tableIngrediente.getValueAt(filaSeleccionada, 2).toString();
+                    // Convertir el índice de la fila seleccionada al índice del modelo de datos
+                    int filaModelo = tableIngrediente.convertRowIndexToModel(filaSeleccionada);
+
+                    // Obtener los datos directamente del modelo de datos
+                    String id = tableIngrediente.getModel().getValueAt(filaModelo, 0).toString(); // Índice en el modelo
+                    String nombre = tableIngrediente.getModel().getValueAt(filaModelo, 1).toString();
+                    String apellido = tableIngrediente.getModel().getValueAt(filaModelo, 2).toString();
 
                     // Mostrar los datos en la consola o en un JOptionPane
                     System.out.println("ID: " + id + ", Nombre: " + nombre + ", Apellido: " + apellido);

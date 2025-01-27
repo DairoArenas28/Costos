@@ -52,7 +52,7 @@ public class Query<T> extends Conexion {
         return registros;
     }
     
-   public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName, List<String> itemSearch) throws SQLException {
+    public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName, List<String> itemSearch) throws SQLException {
         List<Map<String, Object>> registros = new ArrayList<>();
         String query = "SELECT * FROM " + tableName;
 
@@ -105,7 +105,7 @@ public class Query<T> extends Conexion {
    
    
    //Ingrediente
-    public List<T> ObtenerRegistrosIngredientes(String tableName, RowMapper<T> mapper) throws SQLException {
+    /*public List<T> ObtenerRegistrosIngredientes(String tableName, RowMapper<T> mapper) throws SQLException {
         List<T> registros = new ArrayList<>();
         String query = "SELECT P.sNIT,P.sNombre,I.sCodigo,I.sDescrip,* FROM " + tableName + " I inner join Proveedor P " +"on I.iProveedor = P.iProveedor";
         
@@ -117,32 +117,58 @@ public class Query<T> extends Conexion {
             }
         }
         return registros;
-    }
+    }*/
     
-    public List<Map<String, Object>> obtenerRegistrosIngredientes(String tableName) throws SQLException {
+    
+    public List<Map<String, Object>> ObtenerRegistrosIngredientes(String tableName) throws SQLException {
         List<Map<String, Object>> registros = new ArrayList<>();
-        String query = "SELECT P.sNIT, P.sNombre, I.sCodigo, I.sDescrip " +
-                       "FROM " + tableName + " I " +
-                       "INNER JOIN Proveedor P ON I.iProveedor = P.iProveedor";
+ 
+        // Consulta SQL
+        String query = "SELECT I.iIngrediente AS iIngrediente, " +
+               "I.sCodigo AS ingredienteCodigo, " +
+               "I.sDescrip AS ingredienteDescrip, " +
+               "TI.sCodigo AS tipoCodigo, " +
+               "TI.sNombre AS tipoNombre, " +
+               "M.sCodigo AS medidaCodigo, " +
+               "M.sNombre AS medidaNombre, " +
+               "P.sNIT AS proveedorNit, " +
+               "P.sNombre AS proveedorNombre, " +
+               "I.yPrecio AS ingredientePrecio, " +
+               "I.rRendimiento AS ingredienteRendimiento, " +
+               "I.mNota AS ingredienteNota " +
+               "FROM " + tableName + " I " +
+               "INNER JOIN TipoIngrediente TI ON I.iTipoIngrediente = TI.iTipoIngrediente " +
+               "INNER JOIN Medida M ON I.iMedida = M.iMedida " +
+               "INNER JOIN Proveedor P ON I.iProveedor = P.iProveedor";
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
-            // Obtener los metadatos para saber cuántas columnas tiene el resultado
+            // Obtener la metainformación de las columnas (nombres y número de columnas)
             ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
+            int columnCount = metaData.getColumnCount(); // Cantidad de columnas
 
+            // Iterar sobre cada fila del ResultSet
             while (rs.next()) {
-                Map<String, Object> row = new HashMap<>();
-                // Iterar sobre las columnas y llenar el mapa
+                // Usar LinkedHashMap para mantener el orden de las columnas
+                Map<String, Object> fila = new LinkedHashMap<>();
+
+                // Procesar todas las columnas de la fila actual
                 for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i);
-                    Object value = rs.getObject(i);
-                    row.put(columnName, value);
+                    String columnName = metaData.getColumnName(i); // Nombre de la columna
+                    Object columnValue = rs.getObject(i);         // Valor de la columna
+                    fila.put(columnName, columnValue);            // Insertar en el mapa
                 }
-                registros.add(row);
+
+                // Agregar la fila al listado de registros
+                registros.add(fila);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; // Volver a lanzar la excepción para que el llamador la maneje
         }
+
         return registros;
     }
+    
 }
