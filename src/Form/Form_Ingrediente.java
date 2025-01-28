@@ -10,6 +10,7 @@ import Entidad.Ingrediente;
 import Tools.ExportToExcel;
 import Tools.TextPrompt;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ScrollPane;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,7 +30,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -86,27 +89,6 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         
         OcultarCampos();
         
-        
-        
-        /*textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent evt) {
-                proveedor = textProveedor.getText();
-                //System.out.println("Dato: " + proveedor);
-                if (evt.getKeyCode() == KeyEvent.VK_F4) {
-                    Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
-                        @Override
-                        public void onDataReceived(List<String> data) {
-                            //textTipoIngrediente.setText(data);
-                            System.out.println(data);
-                        }
-                    },"Proveedor",Arrays.asList("sNombre",proveedor));
-                    formConsultar.setVisible(true);
-                    formConsultar.setLocationRelativeTo(null);
-                    formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                }
-            }
-        });*/
     }
 
     /**
@@ -344,7 +326,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     .addComponent(textPrecioUnidad)
                     .addComponent(textRendimiento)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         btnGuardar.setBackground(new java.awt.Color(102, 204, 0));
@@ -373,7 +355,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         });
 
         btnExportExcel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnExportExcel.setText("Exportar Excel");
+        btnExportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel_32.png"))); // NOI18N
+        btnExportExcel.setBorderPainted(false);
+        btnExportExcel.setContentAreaFilled(false);
+        btnExportExcel.setDefaultCapable(false);
+        btnExportExcel.setFocusPainted(false);
         btnExportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportExcelActionPerformed(evt);
@@ -406,7 +392,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 288, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExportExcel)
@@ -419,22 +405,28 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idTextProveedor, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(idTextIngrediente, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(checkInactivo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnExportExcel)
-                                .addComponent(jButton4))))
-                    .addComponent(checkInactivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(idTextIngrediente)
-                    .addComponent(idTextTipoIngrediente)
-                    .addComponent(idTextProveedor)
-                    .addComponent(idTextUnidadMedida))
-                .addContainerGap())
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnExportExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(14, 14, 14))
         );
+
+        jPanel6.setOpaque(false);
+        jPanel6.setRequestFocusEnabled(false);
+        jPanel6.setVerifyInputWhenFocusTarget(false);
 
         btnConsultar.setBackground(new java.awt.Color(153, 153, 153));
         btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -455,8 +447,9 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,20 +464,18 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -520,6 +511,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     registro.get("ingredienteInactivo")
                 });
             }
+            AjustarAnchoColumnas(tableIngrediente);
             /*for (Ingrediente ingrediente : ingredientes) {
                 tableModel.addRow(new Object[]{
                     ingrediente.getIngrediente(),
@@ -853,6 +845,26 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TextPrompt textrendimiento = new TextPrompt("Redimiento(%)", textRendimiento, Color.black);
         TextPrompt textproveedor = new TextPrompt("Proveedor", textProveedor, Color.black);
         TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
+    }
+    
+    public static void AjustarAnchoColumnas(JTable tabla) {
+        // Obtener el modelo de columna
+        TableColumnModel columnModel = tabla.getColumnModel();
+
+        for (int col = 0; col < tabla.getColumnCount(); col++) {
+            int anchoMaximo = 0;
+
+            // Recorrer todas las filas para encontrar el ancho máximo de contenido
+            for (int fila = 0; fila < tabla.getRowCount(); fila++) {
+                TableCellRenderer renderer = tabla.getCellRenderer(fila, col);
+                Component comp = tabla.prepareRenderer(renderer, fila, col);
+                anchoMaximo = Math.max(comp.getPreferredSize().width, anchoMaximo);
+            }
+
+            // Agregar un margen adicional y establecer el ancho
+            anchoMaximo += 10; // Margen
+            columnModel.getColumn(col).setPreferredWidth(anchoMaximo);
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;

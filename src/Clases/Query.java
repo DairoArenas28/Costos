@@ -57,7 +57,7 @@ public class Query<T> extends Conexion {
         String query = "SELECT * FROM " + tableName;
 
         if(!itemSearch.isEmpty() && !"".equals(itemSearch.get(0)) && !"".equals(itemSearch.get(1))){
-            query += " WHERE " + itemSearch.get(0) + " = '" + itemSearch.get(1) + "'";
+            query += " WHERE " + itemSearch.get(0) + " LIKE '%" + itemSearch.get(1) + "%'";
         }
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {

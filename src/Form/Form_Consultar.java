@@ -13,8 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComboBox;
@@ -44,9 +46,13 @@ public class Form_Consultar extends javax.swing.JFrame {
     
     private static String[] columnNames;
     
+    List<Map<String, Object>> data;
+    
     //JComboBox<String> comboSearch = new JComboBox<>();
     
     DescripTable descripTable = new DescripTable();
+    
+    Query qry = new Query();
     
     public Form_Consultar(CallBack callback, String tableName, List<String> itemSearch ) {
         initComponents();
@@ -59,7 +65,13 @@ public class Form_Consultar extends javax.swing.JFrame {
         tableEncabezado.getTableHeader().setForeground(Color.white);
         tableEncabezado.setRowHeight(25);
         
-        fillEncabezado();
+        try {
+            
+            data = qry.obtenerRegistrosComoMap(tableName,itemSearch);
+        } catch (Exception e) {
+        }
+        
+        fillTableFromList();
         SeletedRowTable();
         llenarComboBox();
         
@@ -97,30 +109,36 @@ public class Form_Consultar extends javax.swing.JFrame {
         });
     }
     
-    public void fillEncabezado(){
-        Query qry = new Query();
-        
-        try {
-            List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap(tableName,itemSearch);
-            //System.out.println(tableName);
-            //System.out.println(registros);
-            fillTableFromList(registros, tableEncabezado);
-            
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-    }
-    
     public void llenarComboBox() {
+        // Lista para almacenar las descripciones
+        ArrayList<String> descrip = new ArrayList<>();
+
+        // Llenar la lista según la tabla
+        switch (tableName) {
+            case "Proveedor":
+                descrip.add("Hola");
+                descrip.add("Proveedor 1");
+                descrip.add("Proveedor 2");
+                break;
+            case "TipoIngrediente":
+                descrip.add("Cliente 1");
+                descrip.add("Cliente 2");
+                break;
+            default:
+                descrip.add("Sin datos");
+                break;
+        }
+
         // Limpiar el combo box antes de llenarlo
         comboSearch.removeAllItems();
 
-        // Agregar pares clave-valor al combo box
-        comboSearch.addItem("Hola");
-        
+        // Agregar cada elemento de la lista al combo box
+        for (String item : descrip) {
+            comboSearch.addItem(item);
+        }
     }
     
-    public static void fillTableFromList(List<Map<String, Object>> data, JTable table) {
+    public void fillTableFromList() {
         if (data == null || data.isEmpty()) {
             return;
         }
@@ -150,7 +168,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         }
 
         // Asignar el modelo al JTable
-        table.setModel(tableModel);
+        tableEncabezado.setModel(tableModel);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,13 +181,12 @@ public class Form_Consultar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         textCodigo = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
         comboSearch = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableEncabezado = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        btnSeleccionar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -180,13 +197,18 @@ public class Form_Consultar extends javax.swing.JFrame {
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Consultar");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
-        jButton1.setDefaultCapable(false);
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
+        btnConsultar.setBackground(new java.awt.Color(204, 204, 255));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
+        btnConsultar.setDefaultCapable(false);
+        btnConsultar.setFocusPainted(false);
+        btnConsultar.setFocusable(false);
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -198,7 +220,7 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(comboSearch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -210,7 +232,7 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -260,13 +282,6 @@ public class Form_Consultar extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 255));
 
-        btnSeleccionar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnSeleccionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/check_list_v2_48.png"))); // NOI18N
-        btnSeleccionar.setBorderPainted(false);
-        btnSeleccionar.setContentAreaFilled(false);
-        btnSeleccionar.setDefaultCapable(false);
-        btnSeleccionar.setFocusPainted(false);
-
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/close_32.png"))); // NOI18N
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
@@ -278,25 +293,46 @@ public class Form_Consultar extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(706, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 750, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // Obtener el campo seleccionado y el término de búsqueda
+        //JOptionPane.showMessageDialog(null, "Hola");
+        String campoSeleccionado = (String) comboSearch.getSelectedItem();
+        String terminoBusqueda = textCodigo.getText();
+        itemSearch = Arrays.asList("sNombre",terminoBusqueda);
+        try {
+            data = qry.obtenerRegistrosComoMap(tableName,itemSearch);
+        } catch (Exception e) {
+        }
+
+        // Filtrar los datos según el campo y término de búsqueda
+        /*List<Map<String, Object>> resultados = new ArrayList<>();
+        for (Map<String, Object> row : data) {
+            Object valor = row.get(campoSeleccionado);
+            if (valor != null && valor.toString().toLowerCase().contains(terminoBusqueda)) {
+                resultados.add(row);
+            }
+        }*/
+
+        // Mostrar los resultados en la tabla
+        fillTableFromList();
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,9 +370,8 @@ public class Form_Consultar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JComboBox<String> comboSearch;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -39,9 +39,10 @@ public class Form_Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         panelMaestro = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnMedida = new javax.swing.JButton();
+        btnTipoIngrediente = new javax.swing.JButton();
         btnIngrediente = new javax.swing.JButton();
+        btnProveedor = new javax.swing.JButton();
         btnMaestro = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btnMaestro1 = new javax.swing.JButton();
@@ -60,26 +61,26 @@ public class Form_Main extends javax.swing.JFrame {
         panelMaestro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelMaestro.setEnabled(false);
 
-        jButton4.setForeground(new java.awt.Color(0, 71, 171));
-        jButton4.setText("jButton3");
-        jButton4.setBorderPainted(false);
-        jButton4.setContentAreaFilled(false);
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setDefaultCapable(false);
-        jButton4.setFocusPainted(false);
-        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnMedida.setForeground(new java.awt.Color(0, 71, 171));
+        btnMedida.setText("Medida");
+        btnMedida.setBorderPainted(false);
+        btnMedida.setContentAreaFilled(false);
+        btnMedida.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMedida.setDefaultCapable(false);
+        btnMedida.setFocusPainted(false);
+        btnMedida.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jButton5.setForeground(new java.awt.Color(0, 71, 171));
-        jButton5.setText("jButton3");
-        jButton5.setBorderPainted(false);
-        jButton5.setContentAreaFilled(false);
-        jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton5.setDefaultCapable(false);
-        jButton5.setFocusPainted(false);
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnTipoIngrediente.setForeground(new java.awt.Color(0, 71, 171));
+        btnTipoIngrediente.setText("Tipo Ingrediente");
+        btnTipoIngrediente.setBorderPainted(false);
+        btnTipoIngrediente.setContentAreaFilled(false);
+        btnTipoIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTipoIngrediente.setDefaultCapable(false);
+        btnTipoIngrediente.setFocusPainted(false);
+        btnTipoIngrediente.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnTipoIngrediente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnTipoIngredienteActionPerformed(evt);
             }
         });
 
@@ -98,6 +99,20 @@ public class Form_Main extends javax.swing.JFrame {
             }
         });
 
+        btnProveedor.setForeground(new java.awt.Color(0, 71, 171));
+        btnProveedor.setText("Proveedor");
+        btnProveedor.setBorderPainted(false);
+        btnProveedor.setContentAreaFilled(false);
+        btnProveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProveedor.setDefaultCapable(false);
+        btnProveedor.setFocusPainted(false);
+        btnProveedor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProveedorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMaestroLayout = new javax.swing.GroupLayout(panelMaestro);
         panelMaestro.setLayout(panelMaestroLayout);
         panelMaestroLayout.setHorizontalGroup(
@@ -105,9 +120,10 @@ public class Form_Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMaestroLayout.createSequentialGroup()
                 .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(panelMaestroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))
+                    .addComponent(btnMedida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTipoIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnIngrediente, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(btnProveedor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         panelMaestroLayout.setVerticalGroup(
             panelMaestroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,10 +131,12 @@ public class Form_Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnIngrediente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
+                .addComponent(btnTipoIngrediente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnMedida)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnProveedor)
+                .addContainerGap())
         );
 
         btnMaestro.setForeground(new java.awt.Color(255, 255, 255));
@@ -204,7 +222,7 @@ public class Form_Main extends javax.swing.JFrame {
                 .addComponent(btnConectar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(279, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
 
         jPanel1.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 690));
@@ -241,9 +259,9 @@ public class Form_Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnTipoIngredienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTipoIngredienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnTipoIngredienteActionPerformed
 
     private void btnIngredienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngredienteMouseClicked
         //JOptionPane.showMessageDialog(null, "Hola");
@@ -258,6 +276,12 @@ public class Form_Main extends javax.swing.JFrame {
         fomConexion.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         fomConexion.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnConectarActionPerformed
+
+    private void btnProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedorActionPerformed
+        PanelManager panelManager = new PanelManager(bodyPanel);
+        Panel_Proveedor formProveedor = new Panel_Proveedor();
+        panelManager.showForm(formProveedor);
+    }//GEN-LAST:event_btnProveedorActionPerformed
     
     /**
      * @param args the command line arguments
@@ -348,11 +372,12 @@ public class Form_Main extends javax.swing.JFrame {
     private javax.swing.JButton btnIngrediente;
     private javax.swing.JButton btnMaestro;
     private javax.swing.JButton btnMaestro1;
+    private javax.swing.JButton btnMedida;
+    private javax.swing.JButton btnProveedor;
     private javax.swing.JButton btnReceta;
+    private javax.swing.JButton btnTipoIngrediente;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JPanel panelMaestro;
