@@ -120,7 +120,7 @@ public class Query<T> extends Conexion {
     }*/
     
     
-    public List<Map<String, Object>> ObtenerRegistrosIngredientes(String tableName) throws SQLException {
+    public List<Map<String, Object>> ObtenerRegistrosIngredientes(String tableName, boolean inactivo) throws SQLException {
         List<Map<String, Object>> registros = new ArrayList<>();
  
         // Consulta SQL
@@ -138,12 +138,16 @@ public class Query<T> extends Conexion {
                "P.sNombre AS proveedorNombre, " +
                "I.yPrecio AS ingredientePrecio, " +
                "I.rRendimiento AS ingredienteRendimiento, " +
-               "I.mNota AS ingredienteNota " +
+               "I.mNota AS ingredienteNota, " +
+               "I.bInactivo AS ingredienteInactivo " +
                "FROM " + tableName + " I " +
                "INNER JOIN TipoIngrediente TI ON I.iTipoIngrediente = TI.iTipoIngrediente " +
                "INNER JOIN Medida M ON I.iMedida = M.iMedida " +
-               "INNER JOIN Proveedor P ON I.iProveedor = P.iProveedor";
-
+               "INNER JOIN Proveedor P ON I.iProveedor = P.iProveedor ";
+               
+        if(!inactivo){
+            query += "WHERE I.bInactivo = 0";
+        }
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -217,10 +221,10 @@ public class Query<T> extends Conexion {
         }
     }
     
-    // Método genérico para eliminar un registro por ID
-    public boolean EliminarRegistroPorId(String tableName, String idColumnName, int id) throws SQLException {
-        String query = "DELETE FROM " + tableName + " WHERE " + idColumnName + " = ?";
-        
+    // Método genérico para actualizar un registro a inactivo por ID
+    public boolean MarcarComoInactivo(String tableName, String idColumnName, int id) throws SQLException {
+        String query = "UPDATE " + tableName + " SET bInactivo = 1 WHERE " + idColumnName + " = ?";
+
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;

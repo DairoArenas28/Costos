@@ -48,6 +48,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private float rendimiento;
     private String proveedor;
     private String nota;
+    private boolean checkinactivo;
     
     private Query qry = new Query();
     /**
@@ -84,6 +85,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         //Ocultar campos 
         
         OcultarCampos();
+        
+        
         
         /*textProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -145,6 +148,9 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         idTextProveedor = new javax.swing.JTextField();
         idTextUnidadMedida = new javax.swing.JTextField();
         idTextIngrediente = new javax.swing.JTextField();
+        checkInactivo = new javax.swing.JCheckBox();
+        jPanel6 = new javax.swing.JPanel();
+        btnConsultar = new javax.swing.JButton();
 
         popupMenuIngrediente.setBackground(new java.awt.Color(0, 71, 171));
         popupMenuIngrediente.setForeground(new java.awt.Color(255, 255, 255));
@@ -191,20 +197,20 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "", null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Código", "Descripción", "Id Tipo ingrediente", "Cod Tipo ingrediente", "Tipo ingrediente", "Id Unidad medida", "Cod Unidad medida", "Unidad medida", "Id Proveedor", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota"
+                "Id", "Código", "Descripción", "Id Tipo ingrediente", "Cod Tipo ingrediente", "Tipo ingrediente", "Id Unidad medida", "Cod Unidad medida", "Unidad medida", "Id Proveedor", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota", "Inactivo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -342,6 +348,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         );
 
         btnGuardar.setBackground(new java.awt.Color(102, 204, 0));
+        btnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
         btnGuardar.setText("Guardar");
         btnGuardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -355,6 +362,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         });
 
         btnLimpiar.setBackground(new java.awt.Color(0, 71, 171));
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnLimpiar.setForeground(new java.awt.Color(255, 255, 255));
         btnLimpiar.setText("Limpiar");
         btnLimpiar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, new java.awt.Color(153, 153, 153), new java.awt.Color(153, 153, 153)));
@@ -364,6 +372,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             }
         });
 
+        btnExportExcel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnExportExcel.setText("Exportar Excel");
         btnExportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -379,12 +388,17 @@ public class Form_Ingrediente extends javax.swing.JPanel {
 
         idTextIngrediente.setOpaque(true);
 
+        checkInactivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        checkInactivo.setText("Inactivos");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(checkInactivo, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -392,7 +406,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                 .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExportExcel)
@@ -404,19 +418,49 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnExportExcel)
-                        .addComponent(jButton4)
-                        .addComponent(idTextTipoIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idTextUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(idTextIngrediente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnExportExcel)
+                                .addComponent(jButton4))))
+                    .addComponent(checkInactivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(idTextIngrediente)
+                    .addComponent(idTextTipoIngrediente)
+                    .addComponent(idTextProveedor)
+                    .addComponent(idTextUnidadMedida))
                 .addContainerGap())
+        );
+
+        btnConsultar.setBackground(new java.awt.Color(153, 153, 153));
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnConsultar.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultar.setText("Consultar");
+        btnConsultar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnConsultar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnConsultar.setDefaultCapable(false);
+        btnConsultar.setFocusPainted(false);
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -424,29 +468,35 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void fillIngrediente(){
         try {
+            //COnsulta
+            checkinactivo = checkInactivo.isSelected();
             //List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
-            List<Map<String, Object>> registros = qry.ObtenerRegistrosIngredientes("Ingrediente");
+            List<Map<String, Object>> registros = qry.ObtenerRegistrosIngredientes("Ingrediente",checkinactivo);
             //System.out.println("Nuevo metodo para obtener registros: " + registros);
             DefaultTableModel tableModel = (DefaultTableModel) tableIngrediente.getModel();
             tableModel.setRowCount(0);
@@ -466,7 +516,8 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     registro.get("proveedorNombre"),     // Nombre del proveedor
                     registro.get("ingredientePrecio"),   // Precio del ingrediente
                     registro.get("ingredienteRendimiento"), // Rendimiento del ingrediente
-                    registro.get("ingredienteNota")      // Nota del ingrediente
+                    registro.get("ingredienteNota"),      // Nota del ingrediente
+                    registro.get("ingredienteInactivo")
                 });
             }
             /*for (Ingrediente ingrediente : ingredientes) {
@@ -494,7 +545,6 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TableColumn columna = table.getColumnModel().getColumn(columnIndex);
         table.getColumnModel().removeColumn(columna);
     }
-    
     // Método para ocultar varias columnas usando una lista
     public static void ocultarColumnas(JTable table, List<Integer> columnIndices) {
         // Ordenar los índices en orden descendente para evitar problemas al eliminar columnas
@@ -715,7 +765,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
                     int idIngrediente = Integer.parseInt(idTextIngrediente.getText());
 
                     // Eliminar registro
-                    result = qry.EliminarRegistroPorId("Ingrediente", "iIngrediente", idIngrediente);
+                    result = qry.MarcarComoInactivo("Ingrediente", "iIngrediente", idIngrediente);
 
                     if (result) {
                         JOptionPane.showMessageDialog(null, "Registro eliminado correctamente");
@@ -735,6 +785,10 @@ public class Form_Ingrediente extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_deleteMenuTableActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        fillIngrediente();
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     public void onDataReceived(List<String> data){
         System.out.println(data);
@@ -801,9 +855,11 @@ public class Form_Ingrediente extends javax.swing.JPanel {
         TextPrompt textnota = new TextPrompt("Nota", textNota, Color.black);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExportExcel;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JCheckBox checkInactivo;
     private javax.swing.JMenuItem deleteMenuTable;
     private javax.swing.JMenuItem editMenuTable;
     private javax.swing.JTextField idTextIngrediente;
@@ -816,6 +872,7 @@ public class Form_Ingrediente extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu popupMenuIngrediente;
     private javax.swing.JTable tableIngrediente;
