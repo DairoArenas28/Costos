@@ -52,38 +52,53 @@ public class Query<T> extends Conexion {
         return registros;
     }
     
-    public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName, List<String> itemSearch) throws SQLException {
+    public List<Map<String, Object>> obtenerRegistrosComoMap(String tableName, List<String> itemSearch, boolean inactivo) throws SQLException {
         List<Map<String, Object>> registros = new ArrayList<>();
         String query = "SELECT * FROM " + tableName;
+        List<String> condiciones = new ArrayList<>();
+        List<Object> parametros = new ArrayList<>();
 
-        if(!itemSearch.isEmpty() && !"".equals(itemSearch.get(0)) && !"".equals(itemSearch.get(1))){
-            query += " WHERE " + itemSearch.get(0) + " LIKE '%" + itemSearch.get(1) + "%'";
+        // Agregar condición de búsqueda
+        if (!itemSearch.isEmpty() && itemSearch.size() > 1 && !itemSearch.get(0).isEmpty() && !itemSearch.get(1).isEmpty()) {
+            condiciones.add(itemSearch.get(0) + " LIKE ?");
+            parametros.add("%" + itemSearch.get(1) + "%");
         }
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
 
-            // Obtener los nombres de las columnas
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
+        // Agregar condición para `bInactivo`
+        if (!inactivo) {
+            condiciones.add("bInactivo = 0");
+        }
 
-            // Procesar cada fila del ResultSet
-            while (rs.next()) {
-                // Usar LinkedHashMap para mantener el orden de las columnas
-                Map<String, Object> fila = new LinkedHashMap<>();
+        // Construcción dinámica de la consulta
+        if (!condiciones.isEmpty()) {
+            query += " WHERE " + String.join(" AND ", condiciones);
+        }
 
-                // Asignar los valores de cada columna al mapa respetando el orden de las columnas
-                for (int i = 1; i <= columnCount; i++) {
-                    String columnName = metaData.getColumnName(i); // Nombre de la columna
-                    Object columnValue = rs.getObject(i); // Valor de la columna
-                    fila.put(columnName, columnValue); // Insertamos la columna en el mapa
-                }
-
-                // Agregar la fila a la lista de registros
-                registros.add(fila);
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            // Asignar parámetros al `PreparedStatement`
+            for (int i = 0; i < parametros.size(); i++) {
+                stmt.setObject(i + 1, parametros.get(i));
             }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                int columnCount = metaData.getColumnCount();
+
+                // Procesar el `ResultSet`
+                while (rs.next()) {
+                    Map<String, Object> fila = new LinkedHashMap<>();
+                    for (int i = 1; i <= columnCount; i++) {
+                        fila.put(metaData.getColumnName(i), rs.getObject(i));
+                    }
+                    registros.add(fila);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return registros;
+
     }
     
    public boolean InsertarRegistro(String tableName, Map<String, Object> columnValues) throws SQLException {
@@ -196,14 +211,14 @@ public class Query<T> extends Conexion {
         sql.deleteCharAt(sql.lastIndexOf(","));
         sql.append(" WHERE ").append(clavePrimaria).append(" = ?");
         
-        System.out.println("Consulta generada: " + sql); // Debugging: muestra la consulta generada
+        //System.out.println("Consulta generada: " + sql); // Debugging: muestra la consulta generada
 
         try (PreparedStatement statement = conn.prepareStatement(sql.toString())) {
             // Asignar valores a los parámetros
             int index = 1;
             for (Map.Entry<String, Object> entry : registro.entrySet()) {
                 if (!entry.getKey().equals(clavePrimaria)) {
-                     System.out.println("Índice " + index + ": Columna " + entry.getKey() + " = " + entry.getValue());
+                     //System.out.println("Índice " + index + ": Columna " + entry.getKey() + " = " + entry.getValue());
                     statement.setObject(index++, entry.getValue());
                 }
             }

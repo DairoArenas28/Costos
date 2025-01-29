@@ -4,6 +4,21 @@
  */
 package Form;
 
+import Clases.Query;
+import static Form.Form_Ingrediente.AjustarAnchoColumnas;
+import static Form.Form_Ingrediente.ocultarColumnas;
+import Tools.TextPrompt;
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author DanielSantiago
@@ -13,10 +28,95 @@ public class Panel_Proveedor extends javax.swing.JPanel {
     /**
      * Creates new form Panel_Proveedor
      */
+    private boolean result;
+    
+    private String id;
+    private String nit;
+    private String nombre;
+    private String telefono;
+    private String email;
+    private String direccion;
+    private String contacto;
+    private boolean checkinactivo;
+    
+    private final Query qry = new Query();
+    
     public Panel_Proveedor() {
         initComponents();
+        
+        tableProveedor.getTableHeader().setOpaque(false);
+        tableProveedor.getTableHeader().setBackground(new Color(0,71,171));
+        tableProveedor.getTableHeader().setForeground(Color.white);
+        tableProveedor.setRowHeight(25);
+        
+        TextPrompt();
+        
+        ocultarColumnas(tableProveedor,Arrays.asList(0));
+        
+        OcultarCampos();
+        
+        fillProveedor();
+        
+        // Agregar DocumentListener para detectar cambios en el texto
+        textSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                //actualizarTexto();
+                System.out.println(textSearch.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                //actualizarTexto();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                //actualizarTexto();
+            }
+
+            private void actualizarTexto() {
+                //label.setText("Texto: " + textField.getText());
+            }
+        });
     }
 
+     private void fillProveedor(){
+        try {
+            //COnsulta
+            checkinactivo = checkInactivo.isSelected();
+            //List<Ingrediente> ingredientes = qry.ObtenerRegistros("Ingrediente", Ingrediente.rowMapper());
+            List<Map<String, Object>> registros = qry.obtenerRegistrosComoMap("Proveedor",Arrays.asList("sNombre","a"),checkinactivo);
+            DefaultTableModel tableModel = (DefaultTableModel) tableProveedor.getModel();
+            tableModel.setRowCount(0);
+            for (Map<String, Object> registro : registros) {
+                tableModel.addRow(new Object[]{
+                    registro.get("iProveedor"),         // ID del proveedor
+                    registro.get("sNIT"),   // 
+                    registro.get("sNombre"),  // Descripción del ingrediente
+                    registro.get("sTelefono"),
+                    registro.get("sEmail"),          // Código del tipo de ingrediente
+                    registro.get("sDireccion"),          // Nombre del tipo de ingrediente
+                    registro.get("sContacto"),        // Id de la medida
+                    registro.get("bInactivo")
+                });
+            }
+            AjustarAnchoColumnas(tableProveedor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void TextPrompt(){
+        TextPrompt textnit = new TextPrompt("NIT", textNIT, Color.black);
+        TextPrompt textnombre = new TextPrompt("Nombre", textNombre, Color.black);
+        TextPrompt texttelefono = new TextPrompt("Teléfono", textTelefono, Color.black);
+        TextPrompt textcontacto = new TextPrompt("Contacto", textContacto, Color.black);
+        TextPrompt textdireccion = new TextPrompt("Dirección", textDireccion, Color.black);
+        TextPrompt textemail = new TextPrompt("EMAIL", textEMAIL, Color.black);
+        TextPrompt textsearch = new TextPrompt("Buscar", textSearch, Color.black);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,6 +126,9 @@ public class Panel_Proveedor extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenuProveedor = new javax.swing.JPopupMenu();
+        editMenuTable = new javax.swing.JMenuItem();
+        deleteMenuTable = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         textNIT = new javax.swing.JTextField();
@@ -38,12 +141,50 @@ public class Panel_Proveedor extends javax.swing.JPanel {
         btnGuardar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        checkInactivo = new javax.swing.JCheckBox();
+        idTextProveedor = new javax.swing.JTextField();
+        textSearch = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableIngrediente = new javax.swing.JTable();
+        tableProveedor = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
+
+        popupMenuProveedor.setBackground(new java.awt.Color(0, 71, 171));
+        popupMenuProveedor.setForeground(new java.awt.Color(255, 255, 255));
+
+        editMenuTable.setBackground(new java.awt.Color(0, 71, 171));
+        editMenuTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        editMenuTable.setForeground(new java.awt.Color(255, 255, 255));
+        editMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/editar_24.png"))); // NOI18N
+        editMenuTable.setText("Editar");
+        editMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editMenuTableMouseClicked(evt);
+            }
+        });
+        editMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editMenuTableActionPerformed(evt);
+            }
+        });
+        popupMenuProveedor.add(editMenuTable);
+
+        deleteMenuTable.setBackground(new java.awt.Color(255, 102, 102));
+        deleteMenuTable.setForeground(new java.awt.Color(255, 255, 255));
+        deleteMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar_2_24.png"))); // NOI18N
+        deleteMenuTable.setText("Eliminar");
+        deleteMenuTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteMenuTableMouseClicked(evt);
+            }
+        });
+        deleteMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuTableActionPerformed(evt);
+            }
+        });
+        popupMenuProveedor.add(deleteMenuTable);
 
         setPreferredSize(new java.awt.Dimension(1050, 510));
 
@@ -110,9 +251,19 @@ public class Panel_Proveedor extends javax.swing.JPanel {
 
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/excel_32.png"))); // NOI18N
@@ -122,8 +273,11 @@ public class Panel_Proveedor extends javax.swing.JPanel {
         jButton3.setFocusPainted(false);
         jButton3.setFocusable(false);
 
-        jCheckBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBox1.setText("Inactivo");
+        checkInactivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        checkInactivo.setText("Inactivo");
+
+        textSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textSearch.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -131,8 +285,12 @@ public class Panel_Proveedor extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(checkInactivo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(textSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLimpiar)
@@ -144,35 +302,40 @@ public class Panel_Proveedor extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textSearch)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idTextProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(checkInactivo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 204, 255));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        tableIngrediente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        tableIngrediente.setModel(new javax.swing.table.DefaultTableModel(
+        tableProveedor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tableProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "", null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, "", null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Código", "Descripción", "Id Tipo ingrediente", "Cod Tipo ingrediente", "Tipo ingrediente", "Id Unidad medida", "Cod Unidad medida", "Unidad medida", "Id Proveedor", "NIT ", "Proveedor", "Precio unidad", "Rendimiento", "Nota", "Inactivo"
+                "Id", "NIT", "Nombre", "Teléfono", "Email", "Dirección", "Contacto", "Inactivo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -183,21 +346,27 @@ public class Panel_Proveedor extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tableIngrediente.setAutoscrolls(false);
-        tableIngrediente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableIngrediente.setFocusable(false);
-        tableIngrediente.setOpaque(false);
-        tableIngrediente.setRowHeight(25);
-        tableIngrediente.setSelectionBackground(new java.awt.Color(204, 204, 255));
-        tableIngrediente.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(tableIngrediente);
+        tableProveedor.setAutoscrolls(false);
+        tableProveedor.setComponentPopupMenu(popupMenuProveedor);
+        tableProveedor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tableProveedor.setFocusable(false);
+        tableProveedor.setOpaque(false);
+        tableProveedor.setRowHeight(25);
+        tableProveedor.setSelectionBackground(new java.awt.Color(204, 204, 255));
+        tableProveedor.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tableProveedor);
 
         jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 153));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Consultar");
+        btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -205,14 +374,14 @@ public class Panel_Proveedor extends javax.swing.JPanel {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -232,7 +401,7 @@ public class Panel_Proveedor extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -249,25 +418,183 @@ public class Panel_Proveedor extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        id = idTextProveedor.getText();
+        nit = textNIT.getText();
+        nombre = textNombre.getText();
+        telefono = textTelefono.getText();
+        email = textEMAIL.getText();
+        direccion = textDireccion.getText();
+        contacto = textContacto.getText();
+        
+        if(!"".equals(id)){
+            try {
+                Map<String, Object> columnValues = new HashMap<>();
+                columnValues.put("sNIT", nit);
+                columnValues.put("sNombre", nombre);
+                columnValues.put("sTelefono", telefono);
+                columnValues.put("sEmail", email);
+                columnValues.put("sDireccion", direccion);
+                columnValues.put("sContacto", contacto);
+                columnValues.put("bInactivo", false);
+                columnValues.put("iProveedor", id);
+
+                result = qry.ActualizarRegistros("Proveedor", columnValues, "iProveedor");
+                LimpiarCampos();
+                fillProveedor();
+                if (result){
+                    JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            
+
+            try {
+                Map<String, Object> columnValues = new HashMap<>();
+                columnValues.put("sNIT", nit);
+                columnValues.put("sNombre", nombre);
+                columnValues.put("sTelefono", telefono);
+                columnValues.put("sEmail", email);
+                columnValues.put("sDireccion", direccion);
+                columnValues.put("sContacto", contacto);
+                columnValues.put("bInactivo", false);
+
+                result = qry.InsertarRegistro("Proveedor", columnValues);
+                LimpiarCampos();
+                fillProveedor();
+                if (result){
+                    JOptionPane.showMessageDialog(null, "Registro guardado correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void editMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMenuTableMouseClicked
+
+    }//GEN-LAST:event_editMenuTableMouseClicked
+
+    private void editMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuTableActionPerformed
+
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tableProveedor.getSelectedRow();
+
+        // Verificar que haya una fila seleccionada
+        if (filaSeleccionada != -1) {
+            // Convertir el índice de la fila seleccionada al índice del modelo de datos
+            int filaModelo = tableProveedor.convertRowIndexToModel(filaSeleccionada);
+
+            idTextProveedor.setText(tableProveedor.getModel().getValueAt(filaModelo, 0).toString());
+            textNIT.setText(tableProveedor.getModel().getValueAt(filaModelo, 1).toString());
+            textNombre.setText(tableProveedor.getModel().getValueAt(filaModelo, 2).toString());
+            textTelefono.setText(tableProveedor.getModel().getValueAt(filaModelo, 3).toString());
+            textEMAIL.setText(tableProveedor.getModel().getValueAt(filaModelo, 4).toString());
+            textDireccion.setText(tableProveedor.getModel().getValueAt(filaModelo, 5).toString());
+            textContacto.setText(tableProveedor.getModel().getValueAt(filaModelo, 6).toString());
+
+        }
+    }//GEN-LAST:event_editMenuTableActionPerformed
+
+    private void deleteMenuTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMenuTableMouseClicked
+
+    }//GEN-LAST:event_deleteMenuTableMouseClicked
+
+    private void deleteMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuTableActionPerformed
+        //JOptionPane.showMessageDialog(null, "Error al eliminar el registro.");
+        // Obtener la fila seleccionada
+        int filaSeleccionada = tableProveedor.getSelectedRow();
+
+        // Verificar que haya una fila seleccionada
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar el registro?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                // Convertir el índice de la fila seleccionada al índice del modelo de datos
+                int filaModelo = tableProveedor.convertRowIndexToModel(filaSeleccionada);
+
+                idTextProveedor.setText(tableProveedor.getModel().getValueAt(filaModelo, 0).toString());
+
+                try {
+                    // Validar ID del ingrediente
+                    int idProveedor = Integer.parseInt(idTextProveedor.getText());
+
+                    // Eliminar registro
+                    result = qry.MarcarComoInactivo("Proveedor", "iProveedor", idProveedor);
+
+                    if (result) {
+                        JOptionPane.showMessageDialog(null, "Registro eliminado correctamente");
+                        LimpiarCampos();
+                        fillProveedor();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar el registro.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar el registro: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteMenuTableActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        fillProveedor();
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        LimpiarCampos();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    public void LimpiarCampos(){
+        idTextProveedor.setText("");
+        textNIT.setText("");
+        textNombre.setText("");
+        textTelefono.setText("");
+        textEMAIL.setText("");
+        textDireccion.setText("");
+        textContacto.setText("");
+    }
+    
+    private void OcultarCampos(){
+        idTextProveedor.setVisible(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JCheckBox checkInactivo;
+    private javax.swing.JMenuItem deleteMenuTable;
+    private javax.swing.JMenuItem editMenuTable;
+    private javax.swing.JTextField idTextProveedor;
     private javax.swing.JButton jButton3;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableIngrediente;
+    private javax.swing.JPopupMenu popupMenuProveedor;
+    private javax.swing.JTable tableProveedor;
     private javax.swing.JTextField textContacto;
     private javax.swing.JTextField textDireccion;
     private javax.swing.JTextField textEMAIL;
     private javax.swing.JTextField textNIT;
     private javax.swing.JTextField textNombre;
+    private javax.swing.JTextField textSearch;
     private javax.swing.JTextField textTelefono;
     // End of variables declaration//GEN-END:variables
 }

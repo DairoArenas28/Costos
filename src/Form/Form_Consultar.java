@@ -38,6 +38,8 @@ public class Form_Consultar extends javax.swing.JFrame {
     
     private static String tableName;
     
+    private boolean checkinactivo;
+    
     private List<String> itemSearch;
     
     private List<String> descrip;
@@ -66,8 +68,8 @@ public class Form_Consultar extends javax.swing.JFrame {
         tableEncabezado.setRowHeight(25);
         
         try {
-            
-            data = qry.obtenerRegistrosComoMap(tableName,itemSearch);
+            checkinactivo = checkInactivo.isSelected();
+            data = qry.obtenerRegistrosComoMap(tableName,itemSearch,checkinactivo);
         } catch (Exception e) {
         }
         
@@ -183,6 +185,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         textCodigo = new javax.swing.JTextField();
         btnConsultar = new javax.swing.JButton();
         comboSearch = new javax.swing.JComboBox<>();
+        checkInactivo = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableEncabezado = new javax.swing.JTable();
@@ -212,6 +215,10 @@ public class Form_Consultar extends javax.swing.JFrame {
 
         comboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        checkInactivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        checkInactivo.setForeground(new java.awt.Color(255, 255, 255));
+        checkInactivo.setText("Inactivo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -221,7 +228,8 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                     .addComponent(btnConsultar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(comboSearch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(comboSearch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(checkInactivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -231,7 +239,9 @@ public class Form_Consultar extends javax.swing.JFrame {
                 .addComponent(comboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkInactivo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                 .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -317,7 +327,7 @@ public class Form_Consultar extends javax.swing.JFrame {
         String terminoBusqueda = textCodigo.getText();
         itemSearch = Arrays.asList("sNombre",terminoBusqueda);
         try {
-            data = qry.obtenerRegistrosComoMap(tableName,itemSearch);
+            data = qry.obtenerRegistrosComoMap(tableName,itemSearch,checkinactivo);
         } catch (Exception e) {
         }
 
@@ -371,6 +381,7 @@ public class Form_Consultar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
+    private javax.swing.JCheckBox checkInactivo;
     private javax.swing.JComboBox<String> comboSearch;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
