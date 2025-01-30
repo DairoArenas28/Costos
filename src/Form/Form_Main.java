@@ -177,6 +177,11 @@ public class Form_Main extends javax.swing.JFrame {
         btnReceta.setDefaultCapable(false);
         btnReceta.setFocusPainted(false);
         btnReceta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnReceta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecetaActionPerformed(evt);
+            }
+        });
 
         btnConectar.setForeground(new java.awt.Color(255, 255, 255));
         btnConectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/basedatos_24.png"))); // NOI18N
@@ -282,6 +287,12 @@ public class Form_Main extends javax.swing.JFrame {
         Panel_Proveedor formProveedor = new Panel_Proveedor();
         panelManager.showForm(formProveedor);
     }//GEN-LAST:event_btnProveedorActionPerformed
+
+    private void btnRecetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecetaActionPerformed
+        PanelManager panelManager = new PanelManager(bodyPanel);
+        Panel_Receta formReceta = new Panel_Receta();
+        panelManager.showForm(formReceta);
+    }//GEN-LAST:event_btnRecetaActionPerformed
     
     /**
      * @param args the command line arguments

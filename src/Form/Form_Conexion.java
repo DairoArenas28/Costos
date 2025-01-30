@@ -38,6 +38,31 @@ public class Form_Conexion extends javax.swing.JFrame {
         TextPrompt textdb = new TextPrompt("Base de datos", textDB, Color.black);
         TextPrompt textlogintimeout = new TextPrompt("Tiempo de espera(segundos)", textLoginTimeOut, Color.black);
         
+        String[] datosConexion = Conexion.RecuperarConexion();
+    
+        textUser.setText(datosConexion[0]);
+        textPassword.setText(datosConexion[1]);
+        textServer.setText(datosConexion[2]);
+        textDB.setText(datosConexion[3]);
+        textLoginTimeOut.setText(datosConexion[4]);
+        checkEncrypt.setSelected(Boolean.parseBoolean(datosConexion[5]));
+        checkTrustCertificate.setSelected(Boolean.parseBoolean(datosConexion[6]));
+        /*if (datosConexion != null && datosConexion.length == 7) {
+            for(int i = 0; i < datosConexion.length; i++){
+                System.out.println("Dato " + (i+1) + ": "  + datosConexion[i]);
+                
+            }
+
+            // Puedes crear un objeto de conexión con estos datos
+            //String url = "jdbc:sqlserver://" + host + ":" + puerto + ";";
+           // Conexion conn = new Conexion(url, "", usuario, contrasena);
+
+            //if (conn != null) {
+                //System.out.println("Conexión establecida con los datos recuperados.");
+            //}
+        } else {
+            System.err.println("No se pudo recuperar la conexión.");
+        }*/
         
     }
 
@@ -260,21 +285,21 @@ public class Form_Conexion extends javax.swing.JFrame {
     private void btnRecuperarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecuperarActionPerformed
         String[] datosConexion = Conexion.RecuperarConexion();
     
-    if (datosConexion != null && datosConexion.length == 7) {
-        for(int i = 0; i < datosConexion.length; i++){
-            System.out.println("Dato " + (i+1) + ": "  + datosConexion[i]);
+        if (datosConexion != null && datosConexion.length == 7) {
+            for(int i = 0; i < datosConexion.length; i++){
+                System.out.println("Dato " + (i+1) + ": "  + datosConexion[i]);
+            }
+
+            // Puedes crear un objeto de conexión con estos datos
+            //String url = "jdbc:sqlserver://" + host + ":" + puerto + ";";
+           // Conexion conn = new Conexion(url, "", usuario, contrasena);
+
+            //if (conn != null) {
+                //System.out.println("Conexión establecida con los datos recuperados.");
+            //}
+        } else {
+            System.err.println("No se pudo recuperar la conexión.");
         }
-
-        // Puedes crear un objeto de conexión con estos datos
-        //String url = "jdbc:sqlserver://" + host + ":" + puerto + ";";
-       // Conexion conn = new Conexion(url, "", usuario, contrasena);
-
-        //if (conn != null) {
-            //System.out.println("Conexión establecida con los datos recuperados.");
-        //}
-    } else {
-        System.err.println("No se pudo recuperar la conexión.");
-    }
     }//GEN-LAST:event_btnRecuperarActionPerformed
 
     /**
