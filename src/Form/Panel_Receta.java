@@ -4,12 +4,26 @@
  */
 package Form;
 
+import Clases.CallBack;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,6 +36,8 @@ public class Panel_Receta extends javax.swing.JPanel {
     /**
      * Creates new form Panel_Receta
      */
+    DefaultTableModel modelo;
+    private boolean actualizando = false;
     public Panel_Receta() {
         initComponents();
         
@@ -42,20 +58,92 @@ public class Panel_Receta extends javax.swing.JPanel {
         panelGeneral.add(textField, gbc);
         panelGeneral.add(textField, gbc);*/
         
-        DefaultTableModel modelo = (DefaultTableModel) tableDetalle.getModel();
+        modelo = (DefaultTableModel) tableDetalle.getModel();
         
         modelo.addTableModelListener(e -> {
-            if(e.getType() == TableModelEvent.UPDATE){
+            if (actualizando) return; // Si estamos actualizando, no ejecutar el evento nuevamente
+
+            int filaSeleccionada = tableDetalle.getSelectedRow();
+            if (e.getType() == TableModelEvent.UPDATE) {
                 int fila = e.getFirstRow();
                 int columna = e.getColumn();
                 Object nuevoValor = modelo.getValueAt(fila, columna);
+                String valorString = (nuevoValor != null) ? nuevoValor.toString() : "";
 
-                System.out.println("Celda modificada en fila: " + fila + ", columna: " + columna);
-                System.out.println("Nuevo valor: " + nuevoValor);
+                // Si la columna seleccionada es la 1 (índice 0 en base 0)
+                if (columna == 0) {
+                    //System.out.println("Celda modificada en fila: " + fila + ", columna: " + columna);
+                    //System.out.println("Nuevo valor: " + nuevoValor);
 
-                // Aquí puedes agregar la lógica para actualizar la base de datos
+                    Form_Consultar formConsultar = new Form_Consultar(new CallBack() {
+                        @Override
+                        public void onDataReceived(List<String> data) {
+                            actualizando = true; // Evita que el evento se dispare otra vez
+
+                            modelo.setValueAt(data.get(4), filaSeleccionada, 0);
+                            modelo.setValueAt(data.get(5), filaSeleccionada, 1);
+                            modelo.setValueAt(Float.parseFloat(data.get(6).toString()), filaSeleccionada, 4);
+
+                            actualizando = false; // Reactiva el evento después de actualizar
+                        }
+                    }, "Ingrediente", Arrays.asList("sCodigo", valorString));
+
+                    formConsultar.setVisible(true);
+                    formConsultar.setLocationRelativeTo(null);
+                    formConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                }
+                if(columna == 3){
+                    Object precio = modelo.getValueAt(filaSeleccionada, 4);
+                    float precioFloat = 0.0f; // Valor por defecto
+
+                    if(precio instanceof Number) {  
+                        precioFloat = ((Number) precio).floatValue(); // Conversión directa si ya es un número
+                    } else if (precio instanceof String && !((String) precio).isEmpty()) {
+                        precioFloat = Float.parseFloat((String) precio); // Convertir si es un String válido
+                    }
+                    
+                    Object bruto = modelo.getValueAt(filaSeleccionada, 3);
+                    float brutoFloat = 0.0f; // Valor por defecto
+
+                    if(bruto instanceof Number) {  
+                        brutoFloat = ((Number) bruto).floatValue(); // Conversión directa si ya es un número
+                    } else if (bruto instanceof String && !((String) bruto).isEmpty()) {
+                        brutoFloat = Float.parseFloat((String) bruto); // Convertir si es un String válido
+                    }
+
+                    // Multiplicar por 5 y actualizar la tabla
+                    modelo.setValueAt(brutoFloat * precioFloat, filaSeleccionada, 5);
+                    
+                    Calcular();
+                }
             }
         });
+        /*tableDetalle.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fila = tableDetalle.getSelectedRow();  // Obtener fila seleccionada
+                int columna = tableDetalle.getSelectedColumn();  // Obtener columna seleccionada
+
+                // Si la columna seleccionada es la 2 (índice 1 en base 0)
+                if (columna == 1) {
+                    abrirFormulario(fila);  // Llamar al formulario
+                }
+            }
+        });*/
+    }
+
+    
+    private void abrirFormulario(int fila) {
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) parentWindow, "Formulario", true);
+        dialog.setSize(250, 150);
+        dialog.setLayout(new FlowLayout());
+        dialog.add(new JLabel("Formulario para la fila: " + (fila + 1)));
+        JButton cerrar = new JButton("Cerrar");
+        cerrar.addActionListener(e -> dialog.dispose());
+        dialog.add(cerrar);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
     /**
@@ -81,9 +169,19 @@ public class Panel_Receta extends javax.swing.JPanel {
         floatPrecioVenta = new javax.swing.JFormattedTextField();
         floatPrecioVentaIVA = new javax.swing.JFormattedTextField();
         realIVA = new javax.swing.JFormattedTextField();
+        Código = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -95,26 +193,28 @@ public class Panel_Receta extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
+            .addGap(0, 28, Short.MAX_VALUE)
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 255, 204));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        tableDetalle.setAutoCreateRowSorter(true);
         tableDetalle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tableDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "", null, null, null, null, null}
+                {"", null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Código", "Descripción", "Neto", "Bruto", "Precio Unitario", "Total"
+                "Código", "Descripción", "Neto", "Bruto", "Precio Unitario", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, true, true, true, true
+                true, false, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -127,7 +227,6 @@ public class Panel_Receta extends javax.swing.JPanel {
         });
         tableDetalle.setAutoscrolls(false);
         tableDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableDetalle.setFocusable(false);
         tableDetalle.setOpaque(false);
         tableDetalle.setRowHeight(25);
         tableDetalle.setSelectionBackground(new java.awt.Color(204, 204, 255));
@@ -136,7 +235,7 @@ public class Panel_Receta extends javax.swing.JPanel {
 
         jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         textCodigo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
@@ -155,10 +254,40 @@ public class Panel_Receta extends javax.swing.JPanel {
         realGanancia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
         floatPrecioVenta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        floatPrecioVenta.setPreferredSize(new java.awt.Dimension(64, 22));
 
         floatPrecioVentaIVA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        floatPrecioVentaIVA.setMinimumSize(new java.awt.Dimension(64, 22));
 
         realIVA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        realIVA.setMinimumSize(new java.awt.Dimension(64, 22));
+
+        Código.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        Código.setText("Código");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setText("Fecha");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Descripción");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setText("Costo Unitario");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Costo Total");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Ganancia");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Precio Venta");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setText("Precio Venta IVA");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setText("IVA");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -168,75 +297,121 @@ public class Panel_Receta extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(floatPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Código))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(floatPrecioVentaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(realIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(floatCostoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(floatCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(realGanancia, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(floatPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(floatPrecioVentaIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(floatCostoUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(floatCostoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(realGanancia, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(realIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(floatCostoUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(floatCostoTotal)
-                        .addComponent(realGanancia, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Código)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(floatPrecioVenta)
-                    .addComponent(floatPrecioVentaIVA)
-                    .addComponent(realIVA, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFecha)
+                        .addComponent(textDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(floatCostoTotal)
+                            .addComponent(realGanancia)
+                            .addComponent(floatCostoUnitario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(floatPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(floatPrecioVentaIVA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(realIVA, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        jPanel3.setBackground(new java.awt.Color(153, 255, 153));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        jFormattedTextField1.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        jFormattedTextField1.setEnabled(false);
+        jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setLabelFor(jFormattedTextField1);
         jLabel1.setText("TOTAL");
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(362, 362, 362)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -256,20 +431,43 @@ public class Panel_Receta extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //DefaultTableModel modelo = (DefaultTableModel) tableDetalle.getModel();
+        modelo.addRow(new Object[]{"", "", 0, 0, 0, 0}); // Agrega una fila vacía
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void Calcular(){
+        for (int i = 0; i < modelo.getRowCount(); i++) {  // Itera sobre las filas
+            for (int j = 0; j < modelo.getColumnCount(); j++) {  // Itera sobre las columnas
+                Object valor = modelo.getValueAt(i, j);  // Obtiene el valor de la celda
+                System.out.println("Fila " + i + ", Columna " + j + ": " + valor);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Código;
     private javax.swing.JFormattedTextField floatCostoTotal;
     private javax.swing.JFormattedTextField floatCostoUnitario;
     private javax.swing.JFormattedTextField floatPrecioVenta;
     private javax.swing.JFormattedTextField floatPrecioVentaIVA;
+    private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
