@@ -29,7 +29,7 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel4" pref="212" max="32767" attributes="0"/>
+              <Component id="jPanel4" pref="211" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -128,25 +128,26 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="textNIT" min="-2" pref="141" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="floatPrecioVenta" min="-2" pref="153" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT2" min="-2" pref="141" max="-2" attributes="0"/>
+                          <Component id="floatPrecioVentaIVA" min="-2" pref="153" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT1" min="-2" pref="367" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT3" min="-2" pref="153" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT4" min="-2" pref="147" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT5" min="-2" pref="159" max="-2" attributes="0"/>
+                          <Component id="realIVA" min="-2" pref="164" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="textNIT6" min="-2" pref="153" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="textCodigo" min="-2" pref="141" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT7" min="-2" pref="153" max="-2" attributes="0"/>
+                          <Component id="textFecha" min="-2" pref="141" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textNIT8" min="-2" pref="153" max="-2" attributes="0"/>
+                          <Component id="textDescrip" min="-2" pref="367" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="floatCostoUnitario" min="-2" pref="156" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="floatCostoTotal" min="-2" pref="144" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="realGanancia" pref="159" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -157,19 +158,26 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="textNIT" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT3" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT4" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT5" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                          <Component id="floatCostoUnitario" pref="30" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="textCodigo" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="textDescrip" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="textFecha" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="floatCostoTotal" alignment="0" max="32767" attributes="0"/>
+                          <Component id="realGanancia" alignment="0" pref="31" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="textNIT6" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT7" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="textNIT8" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="floatPrecioVenta" max="32767" attributes="0"/>
+                      <Component id="floatPrecioVentaIVA" max="32767" attributes="0"/>
+                      <Component id="realIVA" pref="30" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -177,7 +185,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="textNIT">
+        <Component class="javax.swing.JTextField" name="textCodigo">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -191,7 +199,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT1">
+        <Component class="javax.swing.JTextField" name="textDescrip">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -205,7 +213,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT2">
+        <Component class="javax.swing.JTextField" name="textFecha">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -219,11 +227,22 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT3">
+        <Component class="javax.swing.JFormattedTextField" name="floatCostoUnitario">
           <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder>
+                  <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
             </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="floatCostoTotal">
+          <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -233,11 +252,8 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT4">
+        <Component class="javax.swing.JFormattedTextField" name="realGanancia">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -247,11 +263,8 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT5">
+        <Component class="javax.swing.JFormattedTextField" name="floatPrecioVenta">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -261,11 +274,8 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT6">
+        <Component class="javax.swing.JFormattedTextField" name="floatPrecioVentaIVA">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
@@ -275,25 +285,8 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="textNIT7">
+        <Component class="javax.swing.JFormattedTextField" name="realIVA">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="99" green="99" red="99" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="textNIT8">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="14" style="0"/>
-            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
