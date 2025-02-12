@@ -15,6 +15,8 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ public class Panel_Receta extends javax.swing.JPanel {
      */
     DefaultTableModel modelo;
     private boolean actualizando = false;
+    float countTotal;
     public Panel_Receta() {
         initComponents();
         
@@ -155,6 +158,9 @@ public class Panel_Receta extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        addMenuTable = new javax.swing.JMenuItem();
+        deleteMenuTable = new javax.swing.JMenuItem();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -179,9 +185,28 @@ public class Panel_Receta extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        floatTotal = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+
+        addMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/boton-agregar_24.png"))); // NOI18N
+        addMenuTable.setText("Agregar");
+        addMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMenuTableActionPerformed(evt);
+            }
+        });
+        popupMenu.add(addMenuTable);
+
+        deleteMenuTable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar_24_1.png"))); // NOI18N
+        deleteMenuTable.setText("Eliminar");
+        deleteMenuTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuTableActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteMenuTable);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -226,6 +251,7 @@ public class Panel_Receta extends javax.swing.JPanel {
             }
         });
         tableDetalle.setAutoscrolls(false);
+        tableDetalle.setComponentPopupMenu(popupMenu);
         tableDetalle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tableDetalle.setOpaque(false);
         tableDetalle.setRowHeight(25);
@@ -375,33 +401,34 @@ public class Panel_Receta extends javax.swing.JPanel {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
-        jFormattedTextField1.setDisabledTextColor(new java.awt.Color(102, 102, 102));
-        jFormattedTextField1.setEnabled(false);
-        jFormattedTextField1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        floatTotal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        floatTotal.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        floatTotal.setEnabled(false);
+        floatTotal.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setLabelFor(jFormattedTextField1);
+        jLabel1.setLabelFor(floatTotal);
         jLabel1.setText("TOTAL");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton4.setText("Guardar");
+
+        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton5.setText("Cancelar");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(362, 362, 362)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(floatTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addGap(5, 5, 5)
+                .addComponent(jButton5)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -410,8 +437,9 @@ public class Panel_Receta extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(floatTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -437,28 +465,68 @@ public class Panel_Receta extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //DefaultTableModel modelo = (DefaultTableModel) tableDetalle.getModel();
+    private void addMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMenuTableActionPerformed
         modelo.addRow(new Object[]{"", "", 0, 0, 0, 0}); // Agrega una fila vacía
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addMenuTableActionPerformed
 
-    private void Calcular(){
-        for (int i = 0; i < modelo.getRowCount(); i++) {  // Itera sobre las filas
-            for (int j = 0; j < modelo.getColumnCount(); j++) {  // Itera sobre las columnas
-                Object valor = modelo.getValueAt(i, j);  // Obtiene el valor de la celda
-                System.out.println("Fila " + i + ", Columna " + j + ": " + valor);
+    private void deleteMenuTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuTableActionPerformed
+        int filaSeleccionada = tableDetalle.getSelectedRow();
+        // Verificar que haya una fila seleccionada
+        if (filaSeleccionada != -1) {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar el registro?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                if(modelo.getRowCount() > 1){
+                    modelo.removeRow(filaSeleccionada);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Debes dejar una fila en la tabla", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
+    }//GEN-LAST:event_deleteMenuTableActionPerformed
+
+    public void Calcular() {
+        BigDecimal countTotal = BigDecimal.ZERO;
+        DecimalFormat formato = new DecimalFormat("#,##0.00"); // Usa separador de miles y 2 decimales
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {  // Itera sobre las filas
+            Object valor = modelo.getValueAt(i, 5);  // Obtiene el valor de la celda
+
+            try {
+                if (valor instanceof Number number) {  
+                    countTotal = countTotal.add(new BigDecimal(number.toString()));
+                } else if (valor instanceof String && !((String) valor).trim().isEmpty()) {
+                    countTotal = countTotal.add(new BigDecimal(((String) valor).replace(",", "."))); // Convierte cadena a número
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Error al convertir valor en fila " + i + ": " + valor);
+            }
+
+            System.out.println("Fila " + i + ", Columna " + 5 + ": " + countTotal);
+        }
+
+        floatTotal.setText(formato.format(countTotal)); // Formato con separador de miles
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Código;
+    private javax.swing.JMenuItem addMenuTable;
+    private javax.swing.JMenuItem deleteMenuTable;
     private javax.swing.JFormattedTextField floatCostoTotal;
     private javax.swing.JFormattedTextField floatCostoUnitario;
     private javax.swing.JFormattedTextField floatPrecioVenta;
     private javax.swing.JFormattedTextField floatPrecioVentaIVA;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JFormattedTextField floatTotal;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
@@ -473,6 +541,7 @@ public class Panel_Receta extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JFormattedTextField realGanancia;
     private javax.swing.JFormattedTextField realIVA;
     private javax.swing.JTable tableDetalle;
